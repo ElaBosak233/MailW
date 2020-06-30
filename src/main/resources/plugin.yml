@@ -1,0 +1,25 @@
+name: MailW
+version: 1.0.0
+main: cn.elabosak.mailw.Main
+api-version: 1.12.2
+authors: [ElaBosak233]
+description: A Smart E-mail Sending API For Bukkit / Spigot
+website: https://mailw.elabosak.cn
+
+Commands:
+  MailW:
+    description: The Main Command For "MailW"
+    usage: /MailW <SubCommand> [Content]
+    permission: MailW.general
+  MailWController:
+    description: The Controller Command For "MailW"
+    usage: /MailWController <SubCommand> [Content]
+    permission: MailW.admin
+
+permissions:
+  MailW.admin:
+    description: The Operator Permission
+    default: op
+  MailW.general:
+    description: The General Permission
+    default: true
