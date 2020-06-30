@@ -1,0 +1,19 @@
+## Spigot Server
+whitelist.json
+usercache.json
+start.bat
+spigot.yml
+server.properties
+permissions.yml
+ops.json
+help.yml
+eula.txt
+commands.yml
+bukkit.yml
+banned-ips.json
+banned-players.json
+world
+world_nether
+world_the_end
+plugins
+logs
