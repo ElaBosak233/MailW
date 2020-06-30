@@ -6,7 +6,7 @@ authors: [ElaBosak233]
 description: A Smart E-mail Sending API For Bukkit / Spigot
 website: https://mailw.elabosak.cn
 
-Commands:
+commands:
   MailW:
     description: The Main Command For "MailW"
     usage: /MailW <SubCommand> [Content]

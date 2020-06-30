@@ -1,0 +1,7 @@
+MainSettings:
+  Email:                    #Required field
+  Smtp:                     #Required field
+  Port: 25                  #Use non-SSL port 25 by default, if you use SSL, please be sure to fill in your special port
+  Passwd:                   #Required field
+AuxiliarySettings:
+  AdminEmail:               #Not required, if you want to receive automatic reports about the server, you can fill in your email here
