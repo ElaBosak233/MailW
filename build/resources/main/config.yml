@@ -1,8 +1,7 @@
 MainSettings:
   Email:                    #Required field
   Smtp:                     #Required field
-  Port:                     #Use non-SSL port 25 by default, you can leave it blank, if you use SSL, please be sure to fill in
+  Port: 25                  #Use non-SSL port 25 by default, if you use SSL, please be sure to fill in your special port
   Passwd:                   #Required field
 AuxiliarySettings:
   AdminEmail:               #Not required, if you want to receive automatic reports about the server, you can fill in your email here
-  StartupMail:           #Not required, if AdminEmail is filled in, it will be enabled by default. Use true or false to control on and off

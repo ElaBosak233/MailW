@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public final class Main extends JavaPlugin {
 
-    public HashMap<String, String> data = new HashMap<>();
+//    public HashMap<String, String> data = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -40,11 +40,6 @@ public final class Main extends JavaPlugin {
         if (!template.exists()) {
             template.mkdirs();
         }
-//        try {
-//            SQLite.selectAll(SQLite.getConnection());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"= MailW Has Been Launched =");
         Bukkit.getPluginCommand("MailW").setExecutor(new MailWCmds());
         Bukkit.getPluginCommand("MailWController").setExecutor(new MailWControllerCmds());

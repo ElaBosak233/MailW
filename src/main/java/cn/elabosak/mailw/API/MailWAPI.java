@@ -36,7 +36,12 @@ public class MailWAPI {
      */
     public static boolean sendEmail(Player target, String sender, String subject, String content) {
         String receiveMailAccount = null;
-        receiveMailAccount = plugin.data.get(target.getUniqueId());
+        try {
+            receiveMailAccount = SQLite.select(SQLite.getConnection(),target.getUniqueId().toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
         return sendEmail.send(receiveMailAccount,sender,subject,content);
     }
 

@@ -40,12 +40,6 @@ public class MailWCmds implements CommandExecutor{
                     if (args.length == 2) {
                         if (new setEmailAccount().set(p.getUniqueId(), args[1])){
                             p.sendTitle(ChatColor.GREEN+"§lEmail Set Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
-                            try {
-                                SQLite.selectAll(SQLite.getConnection());
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                return false;
-                            }
                             return true;
                         }else {
                             p.sendMessage(ChatColor.RED+"§lEmail Set Failed");

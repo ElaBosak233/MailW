@@ -29,7 +29,7 @@ public class SQLite {
         Statement stat = null;
         stat = con.createStatement();
         stat.executeUpdate(sql);
-
+        con.close();
     }
 
     //drop table
@@ -38,6 +38,7 @@ public class SQLite {
         Statement stat = null;
         stat = con.createStatement();
         stat.executeUpdate(sql);
+        con.close();
     }
 
     //新增
@@ -49,7 +50,7 @@ public class SQLite {
         pst.setString(idx++, uuid.toString());
         pst.setString(idx++, email);
         pst.executeUpdate();
-
+        con.close();
     }
 
     //修改
@@ -61,6 +62,7 @@ public class SQLite {
         pst.setString(idx++, email);
         pst.setString(idx++, uuid.toString());
         pst.executeUpdate();
+        con.close();
     }
 
     //刪除
@@ -71,9 +73,10 @@ public class SQLite {
         int idx = 1 ;
         pst.setString(idx++, uuid.toString());
         pst.executeUpdate();
+        con.close();
     }
 
-    public static void  selectAll(Connection con)throws SQLException {
+    public static void selectAll(Connection con)throws SQLException {
         String sql = "select * from EMAIL";
         Statement stat = null;
         ResultSet rs = null;
@@ -83,35 +86,33 @@ public class SQLite {
         {
             String uuid = rs.getString("uuid");
             String email = rs.getString("email");
-            plugin.data.put(uuid,email);
+//            plugin.data.put(uuid,email);
             System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
         }
+        con.close();
+    }
+
+    public static String select(Connection con, String uuid)throws SQLException {
+//        String sql = "select * from EMAIL where uuid = '"+uuid+"'";
+        String sql = "select * from EMAIL where uuid =?";
+        PreparedStatement pst = null;
+        pst = con.prepareStatement(sql);
+        int idx = 1 ;
+        pst.setString(idx++, uuid);
+        ResultSet rs = null;
+        rs = pst.executeQuery();
+        String email = null;
+        if (rs.next()) {
+            email = rs.getString("email");
+            System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
+        }
+        con.close();
+        return email;
     }
 
 //    public static void main(String args[]) throws SQLException {
-//        SQLite EMAIL = new SQLite();
-//        Connection con = EMAIL.getConnection();
-//        //建立table
-//        EMAIL.createTable(con);
-//        //新增資料
-//        EMAIL.insert(con, 1, "第一個");
-//        EMAIL.insert(con, 2, "第二個");
-//        //查詢顯示資料
-//        System.out.println("新增二筆資料後狀況:");
-//        EMAIL.selectAll(con);
-//        //修改資料
-//        System.out.println("修改第一筆資料後狀況:");
-//        EMAIL.update(con, 1, "這個值被改變了!");
-//        //查詢顯示資料
-//        EMAIL.selectAll(con);
-//        //刪除資料
-//        System.out.println("刪除第一筆資料後狀況:");
-//        EMAIL.delete(con, 1);
-//        //查詢顯示資料
-//        EMAIL.selectAll(con);
-//        //刪除table
-//        EMAIL.dropTable(con);
-//        con.close();
+//        Connection con = getConnection();
+//        System.out.println(select(con,"58800501-1b7e-4e38-827a-445c724a8fd6"));
 //    }
 
 }
