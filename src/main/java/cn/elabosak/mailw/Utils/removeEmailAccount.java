@@ -1,6 +1,6 @@
 package cn.elabosak.mailw.Utils;
 
-import cn.elabosak.mailw.SQL.SQLite;
+import cn.elabosak.mailw.SQL.EMAIL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,7 +9,7 @@ import java.util.UUID;
 public class removeEmailAccount {
     public boolean remove(UUID uuid) {
         try {
-            SQLite sqlite = new SQLite();
+            EMAIL sqlite = new EMAIL();
             Connection con = sqlite.getConnection();
             sqlite.delete(con, uuid);
             con.close();

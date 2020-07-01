@@ -1,6 +1,6 @@
 package cn.elabosak.mailw.Utils;
 
-import cn.elabosak.mailw.SQL.SQLite;
+import cn.elabosak.mailw.SQL.EMAIL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,12 +9,16 @@ import java.util.UUID;
 public class setEmailAccount {
     public boolean set(UUID uuid, String email) {
         try {
-            SQLite sqlite = new SQLite();
+            EMAIL sqlite = new EMAIL();
             Connection con = sqlite.getConnection();
-            sqlite.createTable(con);
-            sqlite.insert(con, uuid, email);
+            boolean b = false;
+            if (sqlite.select(con, uuid.toString()) != null) {
+                b = sqlite.update(con, uuid, email);
+            } else {
+                b = sqlite.insert(con, uuid, email);
+            }
             con.close();
-            return true;
+            return b;
         } catch (SQLException e) {
             return false;
         }

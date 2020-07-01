@@ -2,10 +2,11 @@ package cn.elabosak.mailw.API;
 
 
 import cn.elabosak.mailw.Main;
-import cn.elabosak.mailw.SQL.SQLite;
+import cn.elabosak.mailw.SQL.EMAIL;
 import cn.elabosak.mailw.Utils.sendEmail;
 import org.bukkit.entity.Player;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -37,7 +38,10 @@ public class MailWAPI {
     public static boolean sendEmail(Player target, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
-            receiveMailAccount = SQLite.select(SQLite.getConnection(),target.getUniqueId().toString());
+            EMAIL sqlite = new EMAIL();
+            Connection con = sqlite.getConnection();
+            receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

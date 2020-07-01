@@ -1,6 +1,6 @@
 package cn.elabosak.mailw.Handler;
 
-import cn.elabosak.mailw.SQL.SQLite;
+import cn.elabosak.mailw.SQL.EMAIL;
 import cn.elabosak.mailw.Utils.removeEmailAccount;
 import cn.elabosak.mailw.Utils.setEmailAccount;
 import org.bukkit.ChatColor;
@@ -9,8 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.sql.SQLException;
-import java.util.Objects;
+import java.sql.Connection;
 
 /**
  * @author ElaBosak

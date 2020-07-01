@@ -1,31 +1,71 @@
 package cn.elabosak.mailw.Utils;
 
 import cn.elabosak.mailw.Main;
+import cn.elabosak.mailw.SQL.SETTINGS;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
 public class sendEmail {
 
-    static Main plugin;
-
     public static String myEmailAccount;
     static {
-        assert false;
-        myEmailAccount = plugin.getConfig().getString("MainSettings.Email");
+        try {
+            Connection con = SETTINGS.getConnection();
+            myEmailAccount = SETTINGS.selectEmail(con);
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-    public static String myEmailPassword = plugin.getConfig().getString("MainSettings.Passwd");
-    public static String myEmailSMTPHost = plugin.getConfig().getString("MainSettings.Smtp");
-    public static String smtpPort = plugin.getConfig().getString("MainSettings.Port");
+
+    public static String myEmailPassword;
+    static {
+        try {
+            Connection con = SETTINGS.getConnection();
+            myEmailPassword = base64.decoder(SETTINGS.selectPASSWD(con));
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String myEmailSMTPHost;
+    static {
+        try {
+            Connection con = SETTINGS.getConnection();
+            myEmailSMTPHost = SETTINGS.selectSMTP(con);
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String smtpPort;
+    static {
+        try {
+            Connection con = SETTINGS.getConnection();
+            smtpPort = SETTINGS.selectPORT(con);
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public static void main(String args[]) throws SQLException {
+//        System.out.println(myEmailPassword);
+//    }
 
     public static boolean send(String receiveMailAccount, String sender, String subject, String content) {
         // 1. 创建参数配置, 用于连接邮件服务器的参数配置
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
         props.setProperty("mail.smtp.host", myEmailSMTPHost);
-        props.setProperty("mail.smtp.auth", "true");
+        props.setProperty("mail.smtp.auth", "false");
         props.setProperty("mail.smtp.port", smtpPort);
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");

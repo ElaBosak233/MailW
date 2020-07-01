@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MailW-Database" uuid="9e93c73d-b562-48d0-84d4-1577b463e71d">
+    <data-source source="LOCAL" name="MailW-Database" uuid="70c56e52-6dfe-4558-bcd7-702eef2a5ecd">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
