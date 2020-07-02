@@ -159,11 +159,11 @@ public class MailWControllerCmds implements CommandExecutor{
                             File file = new File("plugins/MailW/template/"+args[2]+"/index.html");
                             if (file.exists()) {
                                 try {
-                                    String read = varExchange.readHtml(file);
+                                    String read = MailWAPI.readHtml(file);
                                     if (!Objects.equals(read, "err")) {
-                                        String sd = varExchange.getSender(read);
-                                        String tt = varExchange.getTitle(read);
-                                        String content = varExchange.deal(read,target);
+                                        String sd = MailWAPI.getSender(read);
+                                        String tt = MailWAPI.getTitle(read);
+                                        String content = MailWAPI.getContent(read,target);
                                         Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
                                         if (MailWAPI.sendEmail(target, sd,tt,content)) {
                                             p.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");

@@ -12,11 +12,8 @@ import org.apache.commons.io.*;
 import org.bukkit.entity.Player;
 
 public class varExchange {
-    static Main plugin;
 
   public static String readHtml(File file) {
-    // ToDo 等待更改方法
-//    File file = new File("C:\\Users\\ElaBosak\\Desktop\\example.html");
     if (file.exists()) {
         StringBuilder result = new StringBuilder();
         try{
