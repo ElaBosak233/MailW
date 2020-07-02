@@ -41,12 +41,17 @@ public class MailWAPI {
             EMAIL sqlite = new EMAIL();
             Connection con = sqlite.getConnection();
             receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
-            con.close();
+            if (receiveMailAccount != null) {
+                con.close();
+                return sendEmail.send(receiveMailAccount,sender,subject,content);
+            } else {
+                con.close();
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-        return sendEmail.send(receiveMailAccount,sender,subject,content);
     }
 
 }

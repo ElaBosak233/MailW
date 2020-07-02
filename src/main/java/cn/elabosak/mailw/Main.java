@@ -67,6 +67,7 @@ public final class Main extends JavaPlugin {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"= MailW Has Been Launched =");
         Bukkit.getPluginCommand("MailW").setExecutor(new MailWCmds());
         Bukkit.getPluginCommand("MailWController").setExecutor(new MailWControllerCmds());

@@ -18,3 +18,6 @@ world_the_end
 plugins
 logs
 
+## Database
+MailW-Database.db
+

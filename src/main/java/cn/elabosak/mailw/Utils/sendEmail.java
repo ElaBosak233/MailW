@@ -65,7 +65,7 @@ public class sendEmail {
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
         props.setProperty("mail.smtp.host", myEmailSMTPHost);
-        props.setProperty("mail.smtp.auth", "false");
+        props.setProperty("mail.smtp.auth", "true");
         props.setProperty("mail.smtp.port", smtpPort);
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
@@ -117,14 +117,14 @@ public class sendEmail {
         // 1. 创建一封邮件
         MimeMessage message = new MimeMessage(session);
         // 2. From: 发件人
-        message.setFrom(new InternetAddress(sendMail, sender, "UTF-8"));
+        message.setFrom(new InternetAddress(sendMail, sender, "utf-8"));
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
         //ToDo 是否有所可改进之处？
-        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveMail, "UTF-8"));
+        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveMail, "utf-8"));
         // 4. Subject: 邮件主题
-        message.setSubject(subject, "UTF-8");
+        message.setSubject(MimeUtility.encodeText(subject, "utf-8", "B"));
         // 5. Content: 邮件正文（可以使用html标签）
-        message.setContent(content, "text/html;charset=UTF-8");
+        message.setContent(content,"text/html;charset=utf-8");
         // 6. 设置发件时间
         message.setSentDate(new Date());
         // 7. 保存设置

@@ -10,9 +10,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import cn.elabosak.mailw.Utils.varExchange;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
+
 import cn.elabosak.mailw.Utils.base64;
 
 /**
@@ -74,7 +78,7 @@ public class MailWControllerCmds implements CommandExecutor{
                             SETTINGS sqlite = new SETTINGS();
                             Connection con = SETTINGS.getConnection();
                             String password = base64.encoder(args[4]);
-                            //ToDo 等待查错
+                            //ToDo 等待查错 √
                             if (SETTINGS.selectEmail(con) != null || SETTINGS.selectSMTP(con) != null || SETTINGS.selectPORT(con) != null || SETTINGS.selectPASSWD(con) != null) {
                                 SETTINGS.updateTable(con);
                             }
@@ -88,10 +92,12 @@ public class MailWControllerCmds implements CommandExecutor{
                         }
                     } else {
                         p.sendMessage(ChatColor.RED+"§lPlease Type The Correct Targets! You Need Type "+ChatColor.AQUA+"/MailWController <Email> <Smtp> <Port> <Passwd>");
+                        return true;
                     }
                 }
             } else {
                 sender.sendMessage(ChatColor.RED+"§lYou Must Do This As A Player");
+                return true;
             }
         }
         if (args[0].equalsIgnoreCase("test")) {
@@ -114,16 +120,74 @@ public class MailWControllerCmds implements CommandExecutor{
                                     target.sendMessage(ChatColor.GREEN+"§lThe operator sent a test email to your mailbox, please check it~");
                                     return true;
                                 } else {
-                                    p.sendMessage(ChatColor.RED+"§lTest Email Sent Failed");
+                                    p.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
                                     return true;
                                 }
                             } catch (Exception e) {
-                                p.sendMessage(ChatColor.RED+"§lTest Email Sent Failed");
+                                p.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
                                 return true;
                             }
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
+                        return true;
+                    }
+                } else {
+                    p.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
+                    return true;
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED+"§lYou Must Do This As A Player");
+                return true;
+            }
+        }
+        if (args[0].equalsIgnoreCase("send")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (p.hasPermission("MailW.admin")) {
+                    try {
+                        Connection con = SETTINGS.getConnection();
+                        if (SETTINGS.selectEmail(con) == null || SETTINGS.selectSMTP(con) == null || SETTINGS.selectPORT(con) == null || SETTINGS.selectPASSWD(con) == null) {
+                            p.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Passwd> "+ChatColor.BLUE+"=");
+                            con.close();
+                            return true;
+                        } else if (args.length < 3) {
+                            p.sendMessage(ChatColor.RED+"§lPlease Type The Correct Targets To Continue "+ChatColor.GOLD+" /MailWController send <Player> <Template> ");
+                            return true;
+                        } else {
+                            Player target = Bukkit.getPlayer(args[1]);
+                            File file = new File("plugins/MailW/template/"+args[2]+"/index.html");
+                            if (file.exists()) {
+                                try {
+                                    String read = varExchange.readHtml(file);
+                                    if (!Objects.equals(read, "err")) {
+                                        String sd = varExchange.getSender(read);
+                                        String tt = varExchange.getTitle(read);
+                                        String content = varExchange.deal(read,target);
+                                        Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
+                                        if (MailWAPI.sendEmail(target, sd,tt,content)) {
+                                            p.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
+                                            return true;
+                                        } else {
+                                            p.sendMessage(ChatColor.RED+"§lEmail Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
+                                            return true;
+                                        }
+                                    } else {
+                                        p.sendMessage(ChatColor.RED+"§lEmail Sent Failed, HTML Parsing Error");
+                                        return true;
+                                    }
+                                } catch (Exception e) {
+                                    p.sendMessage(ChatColor.RED+"§lEmail Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
+                                    return true;
+                                }
+                            } else {
+                                p.sendMessage(ChatColor.RED+"§lNo Such Template");
+                                return true;
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        return true;
                     }
                 } else {
                     p.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
