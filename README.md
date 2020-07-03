@@ -52,6 +52,10 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 ## ⭐**FAQ**
 - **Why** the **Chinese** email I send is garbled
 > That is because the **default** encoding follows the system encoding when using the **JVM**, please add `-Dfile.encoding=utf-8` after `java` in the **startup script**
+- **Why**did I enter the correct email password, but still can't send email?
+> Some mailboxes do not use passwords as SMTP sending passwords and require authorization codes
+- **Why** ordinary port 25 is not available in some mailboxes
+> For example, the SMTP service of Ali mailbox, port 25 is blocked, you need to use SSL support port 465
 - **How many** placeholders support MailW and what are they
 > You can see them in [**HERE**](https://github.com/ElaBosak233/MailW/blob/master/src/main/java/cn/elabosak/mailw/API/MailWAPI.java#L138), for example, if you enter `{{player.uuid}}` in your template file, it will be replaced with `the uuid of the target player`, which is very flexible
 - **How can** I rely on MailW for development
