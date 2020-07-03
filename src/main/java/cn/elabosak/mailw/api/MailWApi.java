@@ -1,8 +1,10 @@
-package cn.elabosak.mailw.API;
+package cn.elabosak.mailw.api;
 
-import cn.elabosak.mailw.SQL.EMAIL;
-import cn.elabosak.mailw.Utils.sendEmail;
+import cn.elabosak.mailw.sql.Email;
+import cn.elabosak.mailw.utils.sendEmail;
 import org.bukkit.entity.Player;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteDataSource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,12 +19,12 @@ import java.util.regex.Pattern;
 /**
  * @author ElaBosak
  */
-public class MailWAPI {
+public class MailWApi {
 
-    /*
-      Plugin Ver.
-     */
-    private static final String VERSION = "1.0.0";
+    /**
+      * Plugin Ver.
+      */
+    private static final String VERSION = "1.0.1";
 
     /**
      * Get The Version Of This Plugin
@@ -42,7 +44,7 @@ public class MailWAPI {
     public static boolean sendEmail(Player target, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
-            EMAIL sqlite = new EMAIL();
+            Email sqlite = new Email();
             Connection con = sqlite.getConnection();
             receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
             if (receiveMailAccount != null) {
@@ -140,6 +142,18 @@ public class MailWAPI {
         out = htmlString.replace("{{player.name}}", target.getName());
         out = out.replace("{{player.uuid}}", target.getUniqueId().toString());
         return out;
+    }
+
+    /**
+     * Get the email of the specified player
+     * @param con Database connection data
+     * @param player The name of the player whose email needs to be found
+     * @return The required player's email
+     * @throws SQLException Database error
+     */
+    public static String getPlayerEmail(Connection con, Player player) throws SQLException {
+        Email sqlite = new Email();
+        return sqlite.select(con, player.getUniqueId().toString());
     }
 
 }

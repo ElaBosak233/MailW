@@ -1,4 +1,4 @@
-package cn.elabosak.mailw.SQL;
+package cn.elabosak.mailw.sql;
 
 import java.sql.*;
 import java.util.UUID;
@@ -6,7 +6,10 @@ import java.util.UUID;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
-public class EMAIL {
+/**
+ * @author ElaBosak
+ */
+public class Email {
 
     public Connection getConnection() throws SQLException {
         SQLiteConfig config = new SQLiteConfig();
@@ -17,8 +20,13 @@ public class EMAIL {
         return ds.getConnection();
     }
 
-    //create Table
-    public boolean createTable(Connection con)throws SQLException {
+    /**
+     * Create a data table
+     * @param con Database connection data
+     * @return Whether the table was successfully created
+     * @throws SQLException Database error
+     */
+    public boolean createTable(Connection con) throws SQLException {
         String sql = "create TABLE IF NOT EXISTS EMAIL(uuid String, email String); ";
         Statement stat = null;
         stat = con.createStatement();
@@ -30,8 +38,12 @@ public class EMAIL {
         }
     }
 
-    //drop table
-    public void dropTable(Connection con)throws SQLException {
+    /**
+     * Delete the table completely
+     * @param con Database connection data
+     * @throws SQLException Database error
+     */
+    public void dropTable(Connection con) throws SQLException {
         String sql = "drop table EMAIL ";
         Statement stat = null;
         stat = con.createStatement();
@@ -39,8 +51,14 @@ public class EMAIL {
 
     }
 
-    //新增
-    public boolean insert(Connection con, UUID uuid, String email)throws SQLException {
+    /**
+     * Add data to the database
+     * @param con Database connection data
+     * @param email The email address that needs to be set
+     * @return Whether the operation was successful
+     * @throws SQLException Database error
+     */
+    public boolean insert(Connection con, UUID uuid, String email) throws SQLException {
         String sql = "insert into EMAIL (uuid,email) values(?,?)";
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             int idx = 1 ;
@@ -54,8 +72,15 @@ public class EMAIL {
         return true;
     }
 
-    //修改
-    public boolean update(Connection con, UUID uuid, String email)throws SQLException {
+    /**
+     * Change the data in the database
+     * @param con Database connection data
+     * @param email The email address that needs to be set
+     * @param uuid The uuid of the email needs to be changed
+     * @return Whether the operation was successful
+     * @throws SQLException Database error
+     */
+    public boolean update(Connection con, UUID uuid, String email) throws SQLException {
         String sql = "update EMAIL set email = ? where uuid = ?";
         PreparedStatement pst = null;
         pst = con.prepareStatement(sql);
@@ -70,8 +95,13 @@ public class EMAIL {
         }
     }
 
-    //刪除
-    public void delete(Connection con,UUID uuid)throws SQLException {
+    /**
+     * Delete the data in the database
+     * @param con Database connection data
+     * @param uuid Uuid of data to be deleted
+     * @throws SQLException Database error
+     */
+    public void delete(Connection con,UUID uuid) throws SQLException {
         String sql = "delete from EMAIL where uuid = ?";
         PreparedStatement pst = null;
         pst = con.prepareStatement(sql);
@@ -81,7 +111,7 @@ public class EMAIL {
 
     }
 
-    public static void selectAll(Connection con)throws SQLException {
+    public static void selectAll(Connection con) throws SQLException {
         String sql = "select * from EMAIL";
         Statement stat = null;
         ResultSet rs = null;
@@ -91,14 +121,12 @@ public class EMAIL {
         {
             String uuid = rs.getString("uuid");
             String email = rs.getString("email");
-//            plugin.data.put(uuid,email);
             System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
         }
 
     }
 
-    public String select(Connection con, String uuid)throws SQLException {
-//        String sql = "select * from EMAIL where uuid = '"+uuid+"'";
+    public String select(Connection con, String uuid) throws SQLException {
         String sql = "select * from EMAIL where uuid =?";
         PreparedStatement pst = null;
         ResultSet rs = null;

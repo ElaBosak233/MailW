@@ -1,7 +1,6 @@
-package cn.elabosak.mailw.Utils;
+package cn.elabosak.mailw.utils;
 
-import cn.elabosak.mailw.Main;
-import cn.elabosak.mailw.SQL.SETTINGS;
+import cn.elabosak.mailw.sql.Settings;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -15,8 +14,8 @@ public class sendEmail {
     public static String myEmailAccount;
     static {
         try {
-            Connection con = SETTINGS.getConnection();
-            myEmailAccount = SETTINGS.selectEmail(con);
+            Connection con = Settings.getConnection();
+            myEmailAccount = Settings.selectEmail(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -26,8 +25,8 @@ public class sendEmail {
     public static String myEmailPassword;
     static {
         try {
-            Connection con = SETTINGS.getConnection();
-            myEmailPassword = base64.decoder(SETTINGS.selectPASSWD(con));
+            Connection con = Settings.getConnection();
+            myEmailPassword = Base64Run.decoder(Settings.selectPasswd(con));
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,8 +36,8 @@ public class sendEmail {
     public static String myEmailSMTPHost;
     static {
         try {
-            Connection con = SETTINGS.getConnection();
-            myEmailSMTPHost = SETTINGS.selectSMTP(con);
+            Connection con = Settings.getConnection();
+            myEmailSMTPHost = Settings.selectSmtp(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,17 +47,13 @@ public class sendEmail {
     public static String smtpPort;
     static {
         try {
-            Connection con = SETTINGS.getConnection();
-            smtpPort = SETTINGS.selectPORT(con);
+            Connection con = Settings.getConnection();
+            smtpPort = Settings.selectPort(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-//    public static void main(String args[]) throws SQLException {
-//        System.out.println(myEmailPassword);
-//    }
 
     public static boolean send(String receiveMailAccount, String sender, String subject, String content) {
         // 1. 创建参数配置, 用于连接邮件服务器的参数配置
@@ -119,7 +114,6 @@ public class sendEmail {
         // 2. From: 发件人
         message.setFrom(new InternetAddress(sendMail, sender, "utf-8"));
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
-        //ToDo 是否有所可改进之处？
         message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, receiveMail, "utf-8"));
         // 4. Subject: 邮件主题
         message.setSubject(MimeUtility.encodeText(subject, "utf-8", "B"));

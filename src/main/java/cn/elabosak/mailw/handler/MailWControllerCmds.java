@@ -1,9 +1,9 @@
-package cn.elabosak.mailw.Handler;
+package cn.elabosak.mailw.handler;
 
-import cn.elabosak.mailw.API.MailWAPI;
+import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.Main;
-import cn.elabosak.mailw.SQL.SETTINGS;
-import cn.elabosak.mailw.Utils.removeEmailAccount;
+import cn.elabosak.mailw.sql.Settings;
+import cn.elabosak.mailw.utils.removeEmailAccount;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,7 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import cn.elabosak.mailw.Utils.base64;
+import cn.elabosak.mailw.utils.Base64Run;
 
 /**
  * @author ElaBosak
@@ -74,17 +74,20 @@ public class MailWControllerCmds implements CommandExecutor{
                 if (p.hasPermission("MailW.admin")) {
                     if (args.length == 5) {
                         try {
-                            SETTINGS sqlite = new SETTINGS();
-                            Connection con = SETTINGS.getConnection();
-                            String password = base64.encoder(args[4]);
-                            //ToDo 等待查错 √
-                            if (SETTINGS.selectEmail(con) != null || SETTINGS.selectSMTP(con) != null || SETTINGS.selectPORT(con) != null || SETTINGS.selectPASSWD(con) != null) {
-                                SETTINGS.updateTable(con);
+                            Settings sqlite = new Settings();
+                            Connection con = Settings.getConnection();
+                            String password = Base64Run.encoder(args[4]);
+                            if (Settings.selectEmail(con) != null || Settings.selectSmtp(con) != null || Settings.selectPort(con) != null || Settings.selectPasswd(con) != null) {
+                                Settings.updateTable(con);
                             }
-                            sqlite.insert(con, args[1], args[2], args[3], password);
-                            con.close();
-                            p.sendMessage(ChatColor.GREEN+"§lMailW Set Successfully");
-                            return true;
+                            if(sqlite.insert(con, args[1], args[2], args[3], password)) {
+                                con.close();
+                                p.sendMessage(ChatColor.GREEN+"§lMailW Set Successfully");
+                                return true;
+                            } else {
+                                p.sendMessage(ChatColor.RED+"§lMailW Set Failed");
+                                return true;
+                            }
                         } catch (SQLException e) {
                             p.sendMessage(ChatColor.RED+"§lMailW Set Failed");
                             return true;
@@ -104,8 +107,8 @@ public class MailWControllerCmds implements CommandExecutor{
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.admin")) {
                     try {
-                        Connection con = SETTINGS.getConnection();
-                        if (SETTINGS.selectEmail(con) == null || SETTINGS.selectSMTP(con) == null || SETTINGS.selectPORT(con) == null || SETTINGS.selectPASSWD(con) == null) {
+                        Connection con = Settings.getConnection();
+                        if (Settings.selectEmail(con) == null || Settings.selectSmtp(con) == null || Settings.selectPort(con) == null || Settings.selectPasswd(con) == null) {
                             p.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Passwd> "+ChatColor.BLUE+"=");
                             con.close();
                             return true;
@@ -115,7 +118,7 @@ public class MailWControllerCmds implements CommandExecutor{
                         } else {
                             Player target = Bukkit.getPlayer(args[1]);
                             try {
-                                if (MailWAPI.sendEmail(target, "MailW", "Hi! This is = MailW =", "<h1>Hello "+target.getName()+",</h1><p> This is = MailW =, If you receive this email, it means that you have bound successfully. The sending of this email is directly controlled by the administrator, not automatically. It is only used by the administrator for self-test.<p>")) {
+                                if (MailWApi.sendEmail(target, "MailW", "Hi! This is = MailW =", "<h1>Hello "+target.getName()+",</h1><p> This is = MailW =, If you receive this email, it means that you have bound successfully. The sending of this email is directly controlled by the administrator, not automatically. It is only used by the administrator for self-test.<p>")) {
                                     target.sendMessage(ChatColor.GREEN+"§lThe operator sent a test email to your mailbox, please check it~");
                                     return true;
                                 } else {
@@ -145,8 +148,8 @@ public class MailWControllerCmds implements CommandExecutor{
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.admin")) {
                     try {
-                        Connection con = SETTINGS.getConnection();
-                        if (SETTINGS.selectEmail(con) == null || SETTINGS.selectSMTP(con) == null || SETTINGS.selectPORT(con) == null || SETTINGS.selectPASSWD(con) == null) {
+                        Connection con = Settings.getConnection();
+                        if (Settings.selectEmail(con) == null || Settings.selectSmtp(con) == null || Settings.selectPort(con) == null || Settings.selectPasswd(con) == null) {
                             p.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Password> "+ChatColor.BLUE+"=");
                             con.close();
                             return true;
@@ -158,13 +161,13 @@ public class MailWControllerCmds implements CommandExecutor{
                             File file = new File("plugins/MailW/template/"+args[2]+"/index.html");
                             if (file.exists()) {
                                 try {
-                                    String read = MailWAPI.readHtml(file);
+                                    String read = MailWApi.readHtml(file);
                                     if (!Objects.equals(read, "err")) {
-                                        String sd = MailWAPI.getSender(read);
-                                        String tt = MailWAPI.getTitle(read);
-                                        String content = MailWAPI.getContent(read,target);
+                                        String sd = MailWApi.getSender(read);
+                                        String tt = MailWApi.getTitle(read);
+                                        String content = MailWApi.getContent(read,target);
                                         Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
-                                        if (MailWAPI.sendEmail(target, sd,tt,content)) {
+                                        if (MailWApi.sendEmail(target, sd,tt,content)) {
                                             p.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
                                             return true;
                                         } else {

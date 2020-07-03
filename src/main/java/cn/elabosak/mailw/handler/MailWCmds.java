@@ -1,15 +1,12 @@
-package cn.elabosak.mailw.Handler;
+package cn.elabosak.mailw.handler;
 
-import cn.elabosak.mailw.SQL.EMAIL;
-import cn.elabosak.mailw.Utils.removeEmailAccount;
-import cn.elabosak.mailw.Utils.setEmailAccount;
+import cn.elabosak.mailw.utils.removeEmailAccount;
+import cn.elabosak.mailw.utils.setEmailAccount;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.sql.Connection;
 
 /**
  * @author ElaBosak

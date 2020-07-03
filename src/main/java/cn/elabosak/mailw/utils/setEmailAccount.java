@@ -1,15 +1,18 @@
-package cn.elabosak.mailw.Utils;
+package cn.elabosak.mailw.utils;
 
-import cn.elabosak.mailw.SQL.EMAIL;
+import cn.elabosak.mailw.sql.Email;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * @author ElaBosak
+ */
 public class setEmailAccount {
     public boolean set(UUID uuid, String email) {
         try {
-            EMAIL sqlite = new EMAIL();
+            Email sqlite = new Email();
             Connection con = sqlite.getConnection();
             boolean b = false;
             if (sqlite.select(con, uuid.toString()) != null) {

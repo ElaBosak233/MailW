@@ -1,23 +1,16 @@
 package cn.elabosak.mailw;
 
-import cn.elabosak.mailw.Handler.MailWCmds;
-import cn.elabosak.mailw.Handler.MailWControllerCmds;
-import cn.elabosak.mailw.SQL.EMAIL;
-import cn.elabosak.mailw.SQL.SETTINGS;
+import cn.elabosak.mailw.handler.MailWCmds;
+import cn.elabosak.mailw.handler.MailWControllerCmds;
+import cn.elabosak.mailw.sql.Email;
+import cn.elabosak.mailw.sql.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Properties;
-
-import static cn.elabosak.mailw.Utils.sendEmail.*;
 
 /**
  * @author ElaBosak
@@ -40,9 +33,9 @@ public final class Main extends JavaPlugin {
             template.mkdirs();
         }
         try {
-            Connection con = SETTINGS.getConnection();
-            if (SETTINGS.initTable(con)) {
-                if (SETTINGS.selectEmail(con) == null || SETTINGS.selectSMTP(con) == null || SETTINGS.selectPORT(con) == null || SETTINGS.selectPASSWD(con) == null) {
+            Connection con = Settings.getConnection();
+            if (Settings.initTable(con)) {
+                if (Settings.selectEmail(con) == null || Settings.selectSmtp(con) == null || Settings.selectPort(con) == null || Settings.selectPasswd(con) == null) {
                     Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using /MailWController set <Email> <Smtp> <Port> <Passwd> =");
                 }
                 con.close();
@@ -55,7 +48,7 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
         try {
-            EMAIL sqlite = new EMAIL();
+            Email sqlite = new Email();
             Connection con = sqlite.getConnection();
             if(sqlite.createTable(con)) {
                 con.close();

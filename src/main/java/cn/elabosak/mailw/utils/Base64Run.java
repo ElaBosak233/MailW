@@ -1,15 +1,18 @@
-package cn.elabosak.mailw.Utils;
+package cn.elabosak.mailw.utils;
 
 import java.util.Base64;
 
-public class base64 {
+/**
+ * @author ElaBosak
+ */
+public class Base64Run {
 
     /**
      * @param string Need to be encrypted
      * @return Encrypted data
      */
     public static String encoder(String string) {
-        Base64.Encoder encoder = Base64.getEncoder();
+        java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
         return encoder.encodeToString(string.getBytes());
     }
 
@@ -18,7 +21,7 @@ public class base64 {
      * @return Decrypted data
      */
     public static String decoder(String string) {
-        Base64.Decoder decoder = Base64.getDecoder();
+        java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
         return new String(decoder.decode(string));
     }
 }

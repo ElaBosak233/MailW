@@ -1,12 +1,14 @@
-package cn.elabosak.mailw.SQL;
+package cn.elabosak.mailw.sql;
 
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
-import cn.elabosak.mailw.Utils.base64;
 
-public class SETTINGS {
+/**
+ * @author ElaBosak
+ */
+public class Settings {
 
     public static Connection getConnection() throws SQLException {
         SQLiteConfig config = new SQLiteConfig();
@@ -29,29 +31,36 @@ public class SETTINGS {
         }
     }
 
-    public static boolean updateTable(Connection con)throws SQLException {
+    public static void updateTable(Connection con)throws SQLException {
         String sql = "DROP TABLE IF EXISTS SETTINGS; create TABLE SETTINGS(email String, smtp String, port String, passwd String); ";
         Statement stat = null;
         stat = con.createStatement();
-        try {
-            stat.executeUpdate(sql);
-            return true;
-        } catch (SQLException e) {
-            return false;
-        }
+        stat.executeUpdate(sql);
     }
 
-    //drop table
-    public void dropTable(Connection con)throws SQLException {
+    /**
+     * Delete the table completely
+     * @param con Database connection data
+     * @throws SQLException Database error
+     */
+    public static void dropTable(Connection con)throws SQLException {
         String sql = "drop table SETTINGS ";
         Statement stat = null;
         stat = con.createStatement();
         stat.executeUpdate(sql);
     }
 
-    //新增
+    /**
+     * Add data to the database
+     * @param con Database connection data
+     * @param email The email address that needs to be set
+     * @param smtp Smtp server to be set
+     * @param port The smtp server port that needs to be set
+     * @param passwd The password or authorization code of the mailbox to be set
+     * @return Whether the operation was successful
+     * @throws SQLException Database error
+     */
     public boolean insert(Connection con, String email, String smtp, String port, String passwd)throws SQLException {
-//        String sql = "insert into SETTINGS (email, smtp, port, passwd) values("+email+","+smtp+","+port+","+passwd+","+");";
         String sql = "insert into SETTINGS (email, smtp, port, passwd) values(?,?,?,?);";
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             int idx = 1 ;
@@ -67,7 +76,6 @@ public class SETTINGS {
         return true;
     }
 
-    //刪除
     public void delete(Connection con, String email)throws SQLException {
         String sql = "delete from SETTINGS where email = ?";
         PreparedStatement pst = null;
@@ -91,21 +99,21 @@ public class SETTINGS {
         return email;
     }
 
-    public static String selectSMTP(Connection con)throws SQLException {
+    public static String selectSmtp(Connection con)throws SQLException {
         String sql = "select * from SETTINGS";
         Statement stat = null;
         ResultSet rs = null;
         stat = con.createStatement();
         rs = stat.executeQuery(sql);
-        String SMTP = null;
+        String Smtp = null;
         while(rs.next())
         {
-            SMTP = rs.getString("smtp");
+            Smtp = rs.getString("smtp");
         }
-        return SMTP;
+        return Smtp;
     }
 
-    public static String selectPORT(Connection con)throws SQLException {
+    public static String selectPort(Connection con)throws SQLException {
         String sql = "select * from SETTINGS";
         Statement stat = null;
         ResultSet rs = null;
@@ -119,7 +127,7 @@ public class SETTINGS {
         return port;
     }
 
-    public static String selectPASSWD(Connection con)throws SQLException {
+    public static String selectPasswd(Connection con)throws SQLException {
         String sql = "select * from SETTINGS";
         Statement stat = null;
         ResultSet rs = null;
