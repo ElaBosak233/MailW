@@ -44,6 +44,11 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 4. **Enter** the server and enter the command `/MailWController send <YourName> example` (If you have never set up **MailW** or you have never set up your own mailbox, please follow the **COMMANDS** section to set up before you send the example email).
 5. **Open** your mailbox, you can see the mail sent by MailW to you.
 
+## ⭐**DOWNLOAD**
+|**Version**|**Bukkit**|**Date**|**Address**
+|:-:|:-:|:-:|:-:|
+|**v1.0.0**|1.12.2|2020.7.2|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/v1.0.0/MailW.jar)
+
 ## ⭐**FAQ**
 - **Why** the **Chinese** email I send is garbled
 > That is because the **default** encoding follows the system encoding when using the **JVM**, please add `-Dfile.encoding=utf-8` after `java` in the **startup script**
