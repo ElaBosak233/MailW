@@ -4,11 +4,15 @@ import cn.elabosak.mailw.SQL.EMAIL;
 import cn.elabosak.mailw.Utils.sendEmail;
 import org.bukkit.entity.Player;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import cn.elabosak.mailw.Utils.varExchange;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author ElaBosak
@@ -60,7 +64,22 @@ public class MailWAPI {
      * @return Output after converting html file to String
      */
     public static String readHtml(File file) {
-        return varExchange.readHtml(file);
+        if (file.exists()) {
+            StringBuilder result = new StringBuilder();
+            try{
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String s = null;
+                while((s = br.readLine())!=null){
+                    result.append(System.lineSeparator()).append(s);
+                }
+                br.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return result.toString();
+        } else {
+            return "err";
+        }
     }
 
     /**
@@ -69,7 +88,22 @@ public class MailWAPI {
      * @return The title of the html obtained as the mail subject
      */
     public static String getTitle(String htmlString) {
-        return varExchange.getTitle(htmlString);
+        String regex;
+        StringBuilder title = new StringBuilder();
+        final List<String> list = new ArrayList<>();
+        regex = "<title>.*?</title>";
+        final Pattern pa = Pattern.compile(regex, Pattern.CANON_EQ);
+        final Matcher ma = pa.matcher(htmlString);
+        while (ma.find())
+        {
+            list.add(ma.group());
+        }
+        for (String value : list) {
+            title.append(value);
+        }
+        String result = title.toString().replace("<title>","");
+        result = result.replace("</title>","");
+        return result;
     }
 
     /**
@@ -78,7 +112,22 @@ public class MailWAPI {
      * @return The sender of the html obtained as the mail sender
      */
     public static String getSender(String htmlString) {
-        return varExchange.getSender(htmlString);
+        String regex;
+        StringBuilder sender = new StringBuilder();
+        final List<String> list = new ArrayList<>();
+        regex = "<sender hidden>.*?</sender>";
+        final Pattern pa = Pattern.compile(regex, Pattern.CANON_EQ);
+        final Matcher ma = pa.matcher(htmlString);
+        while (ma.find())
+        {
+            list.add(ma.group());
+        }
+        for (String value : list) {
+            sender.append(value);
+        }
+        String result = sender.toString().replace("<sender hidden>","");
+        result = result.replace("</sender>","");
+        return result;
     }
 
     /**
@@ -87,7 +136,10 @@ public class MailWAPI {
      * @return The content of the html obtained as the mail content
      */
     public static String getContent(String htmlString, Player target) {
-        return varExchange.deal(htmlString, target);
+        String out = null;
+        out = htmlString.replace("{{player.name}}", target.getName());
+        out = out.replace("{{player.uuid}}", target.getUniqueId().toString());
+        return out;
     }
 
 }
