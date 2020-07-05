@@ -1,11 +1,11 @@
 version: 2
-machine:
-  java:
-    version: openjdk8
-  notify:
-    branches:
-      only:
-        - master
+#machine:
+#  java:
+#    version: openjdk8
+#  notify:
+#    branches:
+#      only:
+#        - master
 jobs:
   build:
     steps:
