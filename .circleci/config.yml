@@ -18,7 +18,7 @@ jobs:
           command: 'git config --global user.email "circle@circleci.com" && git config --global user.name "CircleCI"'
       - run:
           name: Gradle Build
-          command: 'sudo ./gradlew jar'
+          command: 'sudo su && ./gradlew jar'
   test:
     machine:
       java:
@@ -26,7 +26,7 @@ jobs:
     steps:
       - run:
           name: Post Artifacts
-          command: 'yes|mv -f ./build/lib/*.jar $CIRCLE_ARTIFACTS/MailW-$CIRCLE_BUILD_NUM.jar'
+          command: 'sudo su && yes|mv -f ./build/lib/*.jar $CIRCLE_ARTIFACTS/MailW-$CIRCLE_BUILD_NUM.jar'
 workflows:
   version: 2
   build_and_test:
