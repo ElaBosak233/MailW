@@ -8,6 +8,9 @@ version: 2
 #        - master
 jobs:
   build:
+    machine:
+      java:
+        version: openjdk8
     steps:
       - checkout
       - run:
@@ -17,6 +20,9 @@ jobs:
           name: Gradle Build
           command: 'chmod +x scripts/build.sh && ./scripts/build.sh'
   test:
+    machine:
+      java:
+        version: openjdk8
     steps:
       - run:
           name: Post Artifacts
