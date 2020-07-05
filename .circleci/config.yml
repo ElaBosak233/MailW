@@ -18,7 +18,7 @@ jobs:
           command: 'git config --global user.email "circle@circleci.com" && git config --global user.name "CircleCI"'
       - run:
           name: Gradle Build
-          command: 'chmod +x scripts/build.sh && ./scripts/build.sh'
+          command: './gradlew jar'
   test:
     machine:
       java:
