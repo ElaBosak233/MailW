@@ -5,5 +5,5 @@ branches:
 build_script:
   - ./gradlew jar
 artifacts:
-  - path: ./build/lib/*.jar
+  - path: ./build/libs/*.jar
     name: MailW
