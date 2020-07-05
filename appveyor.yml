@@ -3,7 +3,8 @@ branches:
   only:
     - master
 build_script:
+  - echo 即将开始构建MailW, 本次为第{build}次构建
   - ./gradlew jar
 artifacts:
-  - path: ./build/libs/*.jar
-    name: MailW
+  - name: MailW
+    path: ./build/libs/*.jar
