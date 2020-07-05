@@ -2,8 +2,8 @@ package cn.elabosak.mailw.handler;
 
 import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.Main;
-import cn.elabosak.mailw.sql.Settings;
-import cn.elabosak.mailw.utils.removeEmailAccount;
+import cn.elabosak.mailw.sql.MailWSettings;
+import cn.elabosak.mailw.utils.setEmailAccount;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -51,7 +51,7 @@ public class MailWControllerCmds implements CommandExecutor{
                         return true;
                     } else {
                         Player target = Bukkit.getPlayer(args[1]);
-                        if (target.getUniqueId() != null && new removeEmailAccount().remove(target.getUniqueId())) {
+                        if (target.getUniqueId() != null && new setEmailAccount().remove(target.getUniqueId())) {
                             p.sendMessage(ChatColor.GREEN+"§lEmail Removed Successful");
                             return true;
                         }else {
@@ -74,11 +74,11 @@ public class MailWControllerCmds implements CommandExecutor{
                 if (p.hasPermission("MailW.admin")) {
                     if (args.length == 5) {
                         try {
-                            Settings sqlite = new Settings();
-                            Connection con = Settings.getConnection();
+                            MailWSettings sqlite = new MailWSettings();
+                            Connection con = MailWSettings.getConnection();
                             String password = Base64Run.encoder(args[4]);
-                            if (Settings.selectEmail(con) != null || Settings.selectSmtp(con) != null || Settings.selectPort(con) != null || Settings.selectPasswd(con) != null) {
-                                Settings.updateTable(con);
+                            if (MailWSettings.selectEmail(con) != null || MailWSettings.selectSmtp(con) != null || MailWSettings.selectPort(con) != null || MailWSettings.selectPasswd(con) != null) {
+                                MailWSettings.updateTable(con);
                             }
                             if(sqlite.insert(con, args[1], args[2], args[3], password)) {
                                 con.close();
@@ -107,8 +107,8 @@ public class MailWControllerCmds implements CommandExecutor{
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.admin")) {
                     try {
-                        Connection con = Settings.getConnection();
-                        if (Settings.selectEmail(con) == null || Settings.selectSmtp(con) == null || Settings.selectPort(con) == null || Settings.selectPasswd(con) == null) {
+                        Connection con = MailWSettings.getConnection();
+                        if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
                             p.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Passwd> "+ChatColor.BLUE+"=");
                             con.close();
                             return true;
@@ -148,8 +148,8 @@ public class MailWControllerCmds implements CommandExecutor{
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.admin")) {
                     try {
-                        Connection con = Settings.getConnection();
-                        if (Settings.selectEmail(con) == null || Settings.selectSmtp(con) == null || Settings.selectPort(con) == null || Settings.selectPasswd(con) == null) {
+                        Connection con = MailWSettings.getConnection();
+                        if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
                             p.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Password> "+ChatColor.BLUE+"=");
                             con.close();
                             return true;

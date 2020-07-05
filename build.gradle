@@ -1,10 +1,8 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
 apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'cn.elabosak'
 version '1.0.1'
@@ -27,8 +25,19 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile fileTree(dir:'lib',include:['*.jar'])
+    compileOnly fileTree(dir:'lib',include:['*.jar'])
     compile group: 'javax.mail', name: 'mail', version: '1.4.5'
-    compile group: 'commons-io', name: 'commons-io', version: '2.4'
+    compile group: 'com.github.jnr', name: 'jnr-posix', version: '3.0.1'
+//    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 
 }
+
+jar {
+    manifestContentCharset 'utf-8'
+    metadataCharset 'utf-8'
+    manifest {
+        attributes "Main-Class": "cn.elabosak.mailw.Main"
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }}

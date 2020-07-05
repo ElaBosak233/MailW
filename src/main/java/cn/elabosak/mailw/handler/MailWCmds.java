@@ -1,6 +1,5 @@
 package cn.elabosak.mailw.handler;
 
-import cn.elabosak.mailw.utils.removeEmailAccount;
 import cn.elabosak.mailw.utils.setEmailAccount;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -58,7 +57,7 @@ public class MailWCmds implements CommandExecutor{
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.general")) {
-                    if (new removeEmailAccount().remove(p.getUniqueId())){
+                    if (new setEmailAccount().remove(p.getUniqueId())){
                         p.sendTitle(ChatColor.GOLD+"§lEmail Removed Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
                         return true;
                     }else {

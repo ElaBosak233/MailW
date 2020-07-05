@@ -1,10 +1,9 @@
 package cn.elabosak.mailw.api;
 
-import cn.elabosak.mailw.sql.Email;
+import cn.elabosak.mailw.sql.PlayerEmail;
+import cn.elabosak.mailw.sql.MailWSettings;
 import cn.elabosak.mailw.utils.sendEmail;
 import org.bukkit.entity.Player;
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteDataSource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,10 +40,10 @@ public class MailWApi {
      * @param target Recipient's name
      * @return Whether sending mail is successful
      */
-    public static boolean sendEmail(Player target, String sender, String subject, String content) {
+    public static Boolean sendEmail(Player target, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
-            Email sqlite = new Email();
+            PlayerEmail sqlite = new PlayerEmail();
             Connection con = sqlite.getConnection();
             receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
             if (receiveMailAccount != null) {
@@ -152,8 +151,18 @@ public class MailWApi {
      * @throws SQLException Database error
      */
     public static String getPlayerEmail(Connection con, Player player) throws SQLException {
-        Email sqlite = new Email();
+        PlayerEmail sqlite = new PlayerEmail();
         return sqlite.select(con, player.getUniqueId().toString());
+    }
+
+    /**
+     * Determine if MailW is set
+     * @param con Database connection data
+     * @return Whether MailW is set
+     * @throws SQLException Database error
+     */
+    public static Boolean isMailWSet(Connection con) throws SQLException {
+        return MailWSettings.selectEmail(con) != null && MailWSettings.selectSmtp(con) != null && MailWSettings.selectPort(con) != null && MailWSettings.selectPasswd(con) != null;
     }
 
 }

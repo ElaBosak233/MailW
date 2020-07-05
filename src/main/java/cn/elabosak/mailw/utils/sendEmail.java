@@ -1,6 +1,6 @@
 package cn.elabosak.mailw.utils;
 
-import cn.elabosak.mailw.sql.Settings;
+import cn.elabosak.mailw.sql.MailWSettings;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -14,8 +14,8 @@ public class sendEmail {
     public static String myEmailAccount;
     static {
         try {
-            Connection con = Settings.getConnection();
-            myEmailAccount = Settings.selectEmail(con);
+            Connection con = MailWSettings.getConnection();
+            myEmailAccount = MailWSettings.selectEmail(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,8 +25,8 @@ public class sendEmail {
     public static String myEmailPassword;
     static {
         try {
-            Connection con = Settings.getConnection();
-            myEmailPassword = Base64Run.decoder(Settings.selectPasswd(con));
+            Connection con = MailWSettings.getConnection();
+            myEmailPassword = Base64Run.decoder(MailWSettings.selectPasswd(con));
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,8 +36,8 @@ public class sendEmail {
     public static String myEmailSMTPHost;
     static {
         try {
-            Connection con = Settings.getConnection();
-            myEmailSMTPHost = Settings.selectSmtp(con);
+            Connection con = MailWSettings.getConnection();
+            myEmailSMTPHost = MailWSettings.selectSmtp(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,8 +47,8 @@ public class sendEmail {
     public static String smtpPort;
     static {
         try {
-            Connection con = Settings.getConnection();
-            smtpPort = Settings.selectPort(con);
+            Connection con = MailWSettings.getConnection();
+            smtpPort = MailWSettings.selectPort(con);
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
