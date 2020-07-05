@@ -1,0 +1,25 @@
+machine:
+  java:
+    version: openjdk8
+  notify:
+    branches:
+      only:
+        - master
+jobs:
+  build:
+    steps:
+      - checkout
+      - run:
+          name: Git Config
+          command: 'git config --global user.email "circle@circleci.com" && git config --global user.name "CircleCI"'
+      - run:
+          name: Gradle Build
+          command: 'chmod +x scripts/build.sh && ./scripts/build.sh'
+  test:
+    post:
+      - yes|mv -f ./build/lib/*.jar $CIRCLE_ARTIFACTS/MailW-$CIRCLE_BUILD_NUM.jar
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test
