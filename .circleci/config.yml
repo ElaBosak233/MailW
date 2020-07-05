@@ -18,7 +18,9 @@ jobs:
           command: 'chmod +x scripts/build.sh && ./scripts/build.sh'
   test:
     steps:
-      - run: yes|mv -f ./build/lib/*.jar $CIRCLE_ARTIFACTS/MailW-$CIRCLE_BUILD_NUM.jar
+      - run:
+          name: Post Artifacts
+          command: 'yes|mv -f ./build/lib/*.jar $CIRCLE_ARTIFACTS/MailW-$CIRCLE_BUILD_NUM.jar'
 workflows:
   version: 2
   build_and_test:
