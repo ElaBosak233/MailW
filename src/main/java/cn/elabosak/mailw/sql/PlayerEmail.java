@@ -16,7 +16,8 @@ public class PlayerEmail {
         config.setSharedCache(true);
         config.enableRecursiveTriggers(true);
         SQLiteDataSource ds = new SQLiteDataSource(config);
-        ds.setUrl("jdbc:sqlite:MailW-Database.db");
+        String url = System.getProperty("user.dir");
+        ds.setUrl("jdbc:sqlite:"+url+"/plugins/MailW/"+"MailW-Database.db");
         return ds.getConnection();
     }
 
@@ -65,9 +66,6 @@ public class PlayerEmail {
             pstmt.setString(idx++,uuid.toString());
             pstmt.setString(idx++,email);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
         }
         return true;
     }

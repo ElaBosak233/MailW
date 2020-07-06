@@ -1,7 +1,5 @@
 package cn.elabosak.mailw.utils;
 
-import java.util.Base64;
-
 /**
  * @author ElaBosak
  */

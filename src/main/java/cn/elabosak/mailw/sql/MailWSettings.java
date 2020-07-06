@@ -15,7 +15,8 @@ public class MailWSettings {
         config.setSharedCache(true);
         config.enableRecursiveTriggers(true);
         SQLiteDataSource ds = new SQLiteDataSource(config);
-        ds.setUrl("jdbc:sqlite:MailW-Database.db");
+        String url = System.getProperty("user.dir");
+        ds.setUrl("jdbc:sqlite:"+url+"/plugins/MailW/"+"MailW-Database.db");
         return ds.getConnection();
     }
 
@@ -60,7 +61,7 @@ public class MailWSettings {
      * @return Whether the operation was successful
      * @throws SQLException Database error
      */
-    public boolean insert(Connection con, String email, String smtp, String port, String passwd)throws SQLException {
+    public boolean insert(Connection con, String email, String smtp, String port, String passwd) throws SQLException{
         String sql = "insert into SETTINGS (email, smtp, port, passwd) values(?,?,?,?);";
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             int idx = 1 ;
@@ -69,9 +70,6 @@ public class MailWSettings {
             pstmt.setString(idx++,port);
             pstmt.setString(idx++,passwd);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
         }
         return true;
     }
@@ -140,15 +138,5 @@ public class MailWSettings {
         }
         return passwd;
     }
-
-//    public static void main(String args[]) throws SQLException {
-//        Connection con = getConnection();
-//        createTable(con);
-//        System.out.println(insert(con,"noreply@elabosak.cn","smtp.mxhichina.com","25",base64.encoder("xxxx")));
-//        System.out.println(selectEmail(con));
-//        System.out.println(selectSMTP(con));
-//        System.out.println(selectPORT(con));
-//        System.out.println(selectPASSWD(con));
-//    }
 
 }
