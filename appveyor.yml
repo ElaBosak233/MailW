@@ -3,6 +3,7 @@ branches:
   only:
     - master
 build_script:
+  - ./gradlew clean
   - ./gradlew jar
 artifacts:
   - name: MailW
