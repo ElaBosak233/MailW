@@ -17,7 +17,6 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 ```yaml
 ## If you want to use these commands, you are supposed to have permission "MailW.admin"(Give op by default)
 /MailWController set <Email> <SMTP> <Port> <Password> -- Set the sending email
-/MailWController test <Player> -- Send test emails to specific players
 /MailWController send <Player> <Template> -- Send specified template emails to specific players
 ```
 
@@ -44,14 +43,15 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 5. **Open** your mailbox, you can see the mail sent by MailW to you.
 
 ## ⭐**DOWNLOAD**
-|**Version**|**Bukkit**|**Date**|**Address**
-|:-:|:-:|:-:|:-:|
-|**v1.0.0**|1.12.2|2020.7.2|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/v1.0.0/MailW.jar)
+|**Version**|**Bukkit**|**Content**|**Date**|**Address**
+|:-:|:-:|:-:|:-:|:-:|
+|**1.1.0**|1.12.2|Simplify plugin commands and update API|2020.7.7|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.1.0/MailW-1.1.0.jar)|
+|**1.0.0**|1.12.2|Init Project|2020.7.2|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.0.0/MailW.jar)
 
 ## ⭐**FAQ**
 - **Why** the **Chinese** email I send is garbled
 > That is because the **default** encoding follows the system encoding when using the **JVM**, please add `-Dfile.encoding=utf-8` after `java` in the **startup script**
-- **Why**did I enter the correct email password, but still can't send email?
+- **Why** did I enter the correct email password, but still can't send email?
 > Some mailboxes do not use passwords as SMTP sending passwords and require `authorization codes`
 - **Why** ordinary port 25 is not available in some mailboxes
 > For example, the SMTP service of Ali mailbox, port 25 is `blocked`, you need to use `SSL support` port 465

@@ -1,5 +1,6 @@
 package cn.elabosak.mailw.utils;
 
+import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.sql.PlayerEmail;
 
 import java.sql.Connection;
@@ -13,7 +14,7 @@ public class SetEmailAccount {
     public boolean set(UUID uuid, String email) {
         try {
             PlayerEmail sqlite = new PlayerEmail();
-            Connection con = sqlite.getConnection();
+            Connection con = MailWApi.getConnection();
             boolean b = false;
             if (sqlite.select(con, uuid.toString()) != null) {
                 b = sqlite.update(con, uuid, email);
@@ -29,7 +30,7 @@ public class SetEmailAccount {
     public boolean remove(UUID uuid) {
         try {
             PlayerEmail sqlite = new PlayerEmail();
-            Connection con = sqlite.getConnection();
+            Connection con = MailWApi.getConnection();
             sqlite.delete(con, uuid);
             con.close();
             return true;

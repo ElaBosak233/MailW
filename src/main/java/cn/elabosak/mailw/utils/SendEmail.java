@@ -1,5 +1,6 @@
 package cn.elabosak.mailw.utils;
 
+import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.sql.MailWSettings;
 
 import javax.mail.*;
@@ -17,7 +18,7 @@ public class SendEmail {
     public static String myEmailAccount;
     static {
         try {
-            Connection con = MailWSettings.getConnection();
+            Connection con = MailWApi.getConnection();
             myEmailAccount = MailWSettings.selectEmail(con);
             con.close();
         } catch (SQLException e) {
@@ -28,7 +29,7 @@ public class SendEmail {
     public static String myEmailPassword;
     static {
         try {
-            Connection con = MailWSettings.getConnection();
+            Connection con = MailWApi.getConnection();
             myEmailPassword = Base64Run.decoder(MailWSettings.selectPasswd(con));
             con.close();
         } catch (SQLException e) {
@@ -39,7 +40,7 @@ public class SendEmail {
     public static String myEmailSMTPHost;
     static {
         try {
-            Connection con = MailWSettings.getConnection();
+            Connection con = MailWApi.getConnection();
             myEmailSMTPHost = MailWSettings.selectSmtp(con);
             con.close();
         } catch (SQLException e) {
@@ -50,7 +51,7 @@ public class SendEmail {
     public static String smtpPort;
     static {
         try {
-            Connection con = MailWSettings.getConnection();
+            Connection con = MailWApi.getConnection();
             smtpPort = MailWSettings.selectPort(con);
             con.close();
         } catch (SQLException e) {
@@ -70,7 +71,7 @@ public class SendEmail {
         props.setProperty("mail.smtp.socketFactory.port", smtpPort);
         // 2. 根据配置创建会话对象, 用于和邮件服务器交互
         Session session = Session.getDefaultInstance(props);
-        session.setDebug(true);
+        session.setDebug(false);
         // 3. 创建一封邮件
         Message message = null;
         try {

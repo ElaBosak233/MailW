@@ -34,38 +34,38 @@ public class MailWControllerCmds implements TabExecutor {
                 return true;
             }
         }
-        if(args[0].equalsIgnoreCase("remove")) {
-            if (sender instanceof ConsoleCommandSender) {
-                if (sender.hasPermission("MailW.admin")) {
-                    if (args.length == 1) {
-                        sender.sendMessage(ChatColor.RED+"§lPlease Type A Correct Target To Continue");
-                        return true;
-                    } else {
-                        Player target = Bukkit.getPlayer(args[1]);
-                        if (target.getUniqueId() != null && new SetEmailAccount().remove(target.getUniqueId())) {
-                            sender.sendMessage(ChatColor.GREEN+"§lEmail Removed Successful");
-                            return true;
-                        }else {
-                            sender.sendMessage(ChatColor.RED+"§lEmail Removed Failed");
-                            return true;
-                        }
-                    }
-                } else {
-                    sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
-                    return true;
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED+"§lYou Must Do This As A Player");
-                return true;
-            }
-        }
+//        if(args[0].equalsIgnoreCase("remove")) {
+//            if (sender instanceof ConsoleCommandSender) {
+//                if (sender.hasPermission("MailW.admin")) {
+//                    if (args.length == 1) {
+//                        sender.sendMessage(ChatColor.RED+"§lPlease Type A Correct Target To Continue");
+//                        return true;
+//                    } else {
+//                        Player target = Bukkit.getPlayer(args[1]);
+//                        if (target.getUniqueId() != null && new SetEmailAccount().remove(target.getUniqueId())) {
+//                            sender.sendMessage(ChatColor.GREEN+"§lEmail Removed Successful");
+//                            return true;
+//                        }else {
+//                            sender.sendMessage(ChatColor.RED+"§lEmail Removed Failed");
+//                            return true;
+//                        }
+//                    }
+//                } else {
+//                    sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
+//                    return true;
+//                }
+//            } else {
+//                sender.sendMessage(ChatColor.RED+"§lYou Must Do This As A Player");
+//                return true;
+//            }
+//        }
         if (args[0].equalsIgnoreCase("set")) {
             if (sender instanceof ConsoleCommandSender) {
                 if (sender.hasPermission("MailW.admin")) {
                     if (args.length == 5) {
                         try {
                             MailWSettings sqlite = new MailWSettings();
-                            Connection con = MailWSettings.getConnection();
+                            Connection con = MailWApi.getConnection();
                             String password = Base64Run.encoder(args[4]);
                             if (MailWSettings.selectEmail(con) != null || MailWSettings.selectSmtp(con) != null || MailWSettings.selectPort(con) != null || MailWSettings.selectPasswd(con) != null) {
                                 MailWSettings.updateTable(con);
@@ -92,45 +92,45 @@ public class MailWControllerCmds implements TabExecutor {
                 return true;
             }
         }
-        if (args[0].equalsIgnoreCase("test")) {
-            if (sender.hasPermission("MailW.admin")) {
-                try {
-                    Connection con = MailWSettings.getConnection();
-                    if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
-                        sender.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Passwd> "+ChatColor.BLUE+"=");
-                        con.close();
-                        return true;
-                    } else if (args.length == 1) {
-                        sender.sendMessage(ChatColor.RED+"§lPlease Type A Correct Target To Continue");
-                        return true;
-                    } else {
-                        Player target = Bukkit.getPlayer(args[1]);
-                        try {
-                            if (MailWApi.sendEmail(target, "MailW", "Hi! This is = MailW =", "<h1>Hello "+target.getName()+",</h1><p> This is = MailW =, If you receive this email, it means that you have bound successfully. The sending of this email is directly controlled by the administrator, not automatically. It is only used by the administrator for self-test.<p>")) {
-                                target.sendMessage(ChatColor.GREEN+"§lThe operator sent a test email to your mailbox, please check it~");
-                                return true;
-                            } else {
-                                sender.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
-                                return true;
-                            }
-                        } catch (Exception e) {
-                            sender.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
-                            return true;
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    return true;
-                }
-            } else {
-                sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
-                return true;
-            }
-        }
+//        if (args[0].equalsIgnoreCase("test")) {
+//            if (sender.hasPermission("MailW.admin")) {
+//                try {
+//                    Connection con = MailWApi.getConnection();
+//                    if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
+//                        sender.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Passwd> "+ChatColor.BLUE+"=");
+//                        con.close();
+//                        return true;
+//                    } else if (args.length == 1) {
+//                        sender.sendMessage(ChatColor.RED+"§lPlease Type A Correct Target To Continue");
+//                        return true;
+//                    } else {
+//                        Player target = Bukkit.getPlayer(args[1]);
+//                        try {
+//                            if (MailWApi.sendEmail(target, "MailW", "Hi! This is = MailW =", "<h1>Hello "+target.getName()+",</h1><p> This is = MailW =, If you receive this email, it means that you have bound successfully. The sending of this email is directly controlled by the administrator, not automatically. It is only used by the administrator for self-test.<p>")) {
+//                                target.sendMessage(ChatColor.GREEN+"§lThe operator sent a test email to your mailbox, please check it~");
+//                                return true;
+//                            } else {
+//                                sender.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
+//                                return true;
+//                            }
+//                        } catch (Exception e) {
+//                            sender.sendMessage(ChatColor.RED+"§lTest Email Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
+//                            return true;
+//                        }
+//                    }
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                    return true;
+//                }
+//            } else {
+//                sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
+//                return true;
+//            }
+//        }
         if (args[0].equalsIgnoreCase("send")) {
             if (sender.hasPermission("MailW.admin")) {
                 try {
-                    Connection con = MailWSettings.getConnection();
+                    Connection con = MailWApi.getConnection();
                     if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
                         sender.sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using"+ChatColor.GOLD+" /MailWController set <Email> <Smtp> <Port> <Password> "+ChatColor.BLUE+"=");
                         con.close();
@@ -148,7 +148,7 @@ public class MailWControllerCmds implements TabExecutor {
                                     String sd = MailWApi.getSender(read);
                                     String tt = MailWApi.getTitle(read);
                                     String content = MailWApi.getContent(read,target);
-                                    Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
+//                                    Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
                                     if (MailWApi.sendEmail(target, sd,tt,content)) {
                                         sender.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
                                         return true;
@@ -187,8 +187,6 @@ public class MailWControllerCmds implements TabExecutor {
         if (args.length == 1) {
             List<String> subCommands = new ArrayList<>();
             subCommands.add("set");
-            subCommands.add("remove");
-            subCommands.add("test");
             subCommands.add("send");
             subCommands.add("help");
             return subCommands;

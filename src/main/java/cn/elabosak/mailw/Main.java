@@ -1,5 +1,6 @@
 package cn.elabosak.mailw;
 
+import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.handler.MailWCmds;
 import cn.elabosak.mailw.handler.MailWControllerCmds;
 import cn.elabosak.mailw.sql.PlayerEmail;
@@ -33,7 +34,7 @@ public final class Main extends JavaPlugin {
             template.mkdirs();
         }
         try {
-            Connection con = MailWSettings.getConnection();
+            Connection con = MailWApi.getConnection();
             if (MailWSettings.initTable(con)) {
                 if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
                     Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using /MailWController set <Email> <Smtp> <Port> <Passwd> =");
@@ -49,7 +50,7 @@ public final class Main extends JavaPlugin {
         }
         try {
             PlayerEmail sqlite = new PlayerEmail();
-            Connection con = sqlite.getConnection();
+            Connection con = MailWApi.getConnection();
             if(sqlite.createTable(con)) {
                 con.close();
             } else {

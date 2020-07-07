@@ -10,16 +10,6 @@ import java.sql.*;
  */
 public class MailWSettings {
 
-    public static Connection getConnection() throws SQLException {
-        SQLiteConfig config = new SQLiteConfig();
-        config.setSharedCache(true);
-        config.enableRecursiveTriggers(true);
-        SQLiteDataSource ds = new SQLiteDataSource(config);
-        String url = System.getProperty("user.dir");
-        ds.setUrl("jdbc:sqlite:"+url+"/plugins/MailW/"+"MailW-Database.db");
-        return ds.getConnection();
-    }
-
     public static boolean initTable(Connection con)throws SQLException {
         String sql = "create TABLE IF NOT EXISTS SETTINGS(email String, smtp String, port String, passwd String); ";
         Statement stat = null;

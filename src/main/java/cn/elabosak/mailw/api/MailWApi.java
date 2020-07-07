@@ -4,6 +4,8 @@ import cn.elabosak.mailw.sql.PlayerEmail;
 import cn.elabosak.mailw.sql.MailWSettings;
 import cn.elabosak.mailw.utils.SendEmail;
 import org.bukkit.entity.Player;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteDataSource;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,15 +23,10 @@ import java.util.regex.Pattern;
 public class MailWApi {
 
     /**
-      * Plugin Ver.
-      */
-    private static final String VERSION = "1.0.2-SNAPSHOT";
-
-    /**
      * Get The Version Of This Plugin
      */
     public static String getVersion() {
-        return VERSION;
+        return "1.1.0";
     }
 
     /**
@@ -44,7 +41,7 @@ public class MailWApi {
         String receiveMailAccount = null;
         try {
             PlayerEmail sqlite = new PlayerEmail();
-            Connection con = sqlite.getConnection();
+            Connection con = MailWApi.getConnection();
             receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
             if (receiveMailAccount != null) {
                 con.close();
@@ -163,6 +160,21 @@ public class MailWApi {
      */
     public static boolean isMailWSet(Connection con) throws SQLException {
         return MailWSettings.selectEmail(con) != null && MailWSettings.selectSmtp(con) != null && MailWSettings.selectPort(con) != null && MailWSettings.selectPasswd(con) != null;
+    }
+
+    /**
+     * Get a database connection
+     * @return Database connection data
+     * @throws SQLException Database error
+     */
+    public static Connection getConnection() throws SQLException {
+        SQLiteConfig config = new SQLiteConfig();
+        config.setSharedCache(true);
+        config.enableRecursiveTriggers(true);
+        SQLiteDataSource ds = new SQLiteDataSource(config);
+        String url = System.getProperty("user.dir");
+        ds.setUrl("jdbc:sqlite:"+url+"/plugins/MailW/"+"MailW-Database.db");
+        return ds.getConnection();
     }
 
 }

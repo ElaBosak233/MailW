@@ -11,16 +11,6 @@ import org.sqlite.SQLiteDataSource;
  */
 public class PlayerEmail {
 
-    public Connection getConnection() throws SQLException {
-        SQLiteConfig config = new SQLiteConfig();
-        config.setSharedCache(true);
-        config.enableRecursiveTriggers(true);
-        SQLiteDataSource ds = new SQLiteDataSource(config);
-        String url = System.getProperty("user.dir");
-        ds.setUrl("jdbc:sqlite:"+url+"/plugins/MailW/"+"MailW-Database.db");
-        return ds.getConnection();
-    }
-
     /**
      * Create a data table
      * @param con Database connection data

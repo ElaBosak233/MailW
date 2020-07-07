@@ -77,7 +77,21 @@ public class MailWCmds implements TabExecutor {
                 return true;
             }
         }
-        //ToDo 更多命令
+        if (args[0].equalsIgnoreCase("help")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (p.hasPermission("MailW.general")) {
+                    p.sendMessage("§9§l=-=-=-=-=-=MailW Help=-=-=-=-=-=\n§6/MailW set <Email> -- Record MailW mailbox\n§6/MailW remove -- Remove MailW mailbox records\n§9§l=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");
+                    return true;
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED+"§lYou Must Do This As A Player");
+                return true;
+            }
+        }
         return false;
     }
 
