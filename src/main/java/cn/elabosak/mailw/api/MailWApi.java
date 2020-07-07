@@ -27,7 +27,7 @@ public class MailWApi {
      * Get The Version Of This Plugin
      */
     public static String getVersion() {
-        return "1.1.0";
+        return "1.2.0";
     }
 
     /**
@@ -41,9 +41,8 @@ public class MailWApi {
     public static boolean sendEmail(String uuid, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
-            PlayerEmail sqlite = new PlayerEmail();
             Connection con = MailWApi.getConnection();
-            receiveMailAccount = sqlite.selectEmail(con, uuid);
+            receiveMailAccount = PlayerEmail.selectEmail(con, uuid);
             if (receiveMailAccount != null) {
                 con.close();
                 return SendEmail.send(receiveMailAccount,sender,subject,content);

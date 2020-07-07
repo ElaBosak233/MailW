@@ -57,7 +57,6 @@ public class PlayerEmail {
             pstmt.setString(idx++,uuid);
             pstmt.setString(idx++,email);
             pstmt.executeUpdate();
-            con.close();
         }
         return true;
     }
@@ -169,7 +168,7 @@ public class PlayerEmail {
         String email = null;
         if (rs.next()) {
             email = rs.getString("email");
-            System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
+//            System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
         }
         return email;
     }
@@ -185,7 +184,7 @@ public class PlayerEmail {
         String playerName = null;
         if (rs.next()) {
             playerName = rs.getString("playerName");
-            System.out.println(rs.getString("uuid")+"\t"+rs.getString("playerName"));
+//            System.out.println(rs.getString("uuid")+"\t"+rs.getString("playerName"));
         }
         return playerName;
     }
@@ -201,7 +200,7 @@ public class PlayerEmail {
         String uuid = null;
         if (rs.next()) {
             uuid = rs.getString("uuid");
-            System.out.println(rs.getString("uuid")+"\t"+rs.getString("uuid"));
+//            System.out.println(rs.getString("uuid")+"\t"+rs.getString("uuid"));
         }
         return uuid;
     }

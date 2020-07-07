@@ -45,6 +45,7 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 ## ⭐**DOWNLOAD**
 |**Version**|**Bukkit**|**Content**|**Date**|**Address**
 |:-:|:-:|:-:|:-:|:-:|
+|**1.2.0**|1.12.2|Bug fixes, support sending emails to offline players|2020.7.7|[**Download**]((https://github.com/ElaBosak233/MailW/releases/download/1.2.0/MailW-1.2.0.jar))|
 |**1.1.0**|1.12.2|Simplify plugin commands and update API|2020.7.7|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.1.0/MailW-1.1.0.jar)|
 |**1.0.0**|1.12.2|Init Project|2020.7.2|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.0.0/MailW.jar)|
 

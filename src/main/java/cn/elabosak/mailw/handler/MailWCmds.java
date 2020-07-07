@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +38,16 @@ public class MailWCmds implements TabExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.general")) {
                     if (args.length == 2) {
-                        if (SetEmailAccount.set(p.getName(), p.getUniqueId().toString(), args[1])){
-                            p.sendTitle(ChatColor.GREEN+"§lEmail Set Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
-                            return true;
-                        }else {
-                            p.sendMessage(ChatColor.RED+"§lEmail Set Failed");
-                            return true;
+                        try {
+                            if (SetEmailAccount.set(p.getName(), p.getUniqueId().toString(), args[1])){
+                                p.sendTitle(ChatColor.GREEN+"§lEmail Set Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
+                                return true;
+                            }else {
+                                p.sendMessage(ChatColor.RED+"§lEmail Set Failed");
+                                return true;
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     } else {
                         p.sendMessage(ChatColor.RED+"§lPlease Type Your Email");
@@ -61,12 +66,16 @@ public class MailWCmds implements TabExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.general")) {
-                    if (SetEmailAccount.remove(p.getUniqueId().toString())){
-                        p.sendTitle(ChatColor.GOLD+"§lEmail Removed Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
-                        return true;
-                    }else {
-                        p.sendMessage(ChatColor.RED+"§lEmail Removed Failed");
-                        return true;
+                    try {
+                        if (SetEmailAccount.remove(p.getUniqueId().toString())){
+                            p.sendTitle(ChatColor.GOLD+"§lEmail Removed Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
+                            return true;
+                        }else {
+                            p.sendMessage(ChatColor.RED+"§lEmail Removed Failed");
+                            return true;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     sender.sendMessage(ChatColor.RED+"§lYou Don't Have Permission");

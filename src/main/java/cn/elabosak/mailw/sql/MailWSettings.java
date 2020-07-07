@@ -51,7 +51,7 @@ public class MailWSettings {
      * @return Whether the operation was successful
      * @throws SQLException Database error
      */
-    public boolean insert(Connection con, String email, String smtp, String port, String passwd) throws SQLException{
+    public static boolean insert(Connection con, String email, String smtp, String port, String passwd) throws SQLException{
         String sql = "insert into SETTINGS (email, smtp, port, passwd) values(?,?,?,?);";
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             int idx = 1 ;
@@ -60,8 +60,10 @@ public class MailWSettings {
             pstmt.setString(idx++,port);
             pstmt.setString(idx++,passwd);
             pstmt.executeUpdate();
+            return true;
+        } finally{
+            con.close();
         }
-        return true;
     }
 
     public void delete(Connection con, String email)throws SQLException {

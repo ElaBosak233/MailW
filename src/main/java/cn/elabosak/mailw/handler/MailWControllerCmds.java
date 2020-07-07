@@ -63,14 +63,12 @@ public class MailWControllerCmds implements TabExecutor {
                 if (sender.hasPermission("MailW.admin")) {
                     if (args.length == 5) {
                         try {
-                            MailWSettings sqlite = new MailWSettings();
                             Connection con = MailWApi.getConnection();
                             String password = Base64Run.encoder(args[4]);
                             if (MailWSettings.selectEmail(con) != null || MailWSettings.selectSmtp(con) != null || MailWSettings.selectPort(con) != null || MailWSettings.selectPasswd(con) != null) {
                                 MailWSettings.updateTable(con);
                             }
-                            if(sqlite.insert(con, args[1], args[2], args[3], password)) {
-                                con.close();
+                            if (MailWSettings.insert(con, args[1], args[2], args[3], password)) {
                                 sender.sendMessage(ChatColor.GREEN+"§lMailW Set Successfully");
                                 return true;
                             } else {
@@ -146,13 +144,12 @@ public class MailWControllerCmds implements TabExecutor {
                                     String sd = MailWApi.htmlGetSender(read);
                                     String tt = MailWApi.htmlGetTitle(read);
                                     String content = MailWApi.htmlGetContent(read,args[1]);
-                                    PlayerEmail sqlite = new PlayerEmail();
-                                    String uuid = sqlite.selectUuid(con, args[1]);
+                                    String uuid = PlayerEmail.selectUuid(con, args[1]);
                                     if (MailWApi.sendEmail(uuid, sd,tt,content)) {
                                         sender.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
                                         return true;
                                     } else {
-                                        sender.sendMessage(ChatColor.RED+"§lEmail Sent Failed, Player Does NOT Exist OR Player Is NOT Set = MailW =");
+                                        sender.sendMessage(ChatColor.RED+"§lFailed To Send The Email, The Player Does NOT Exist OR Does NOT Set Up = MailW = OR The Administrator's Sending Mailbox Is Set Incorrectly");
                                         return true;
                                     }
                                 } else {
