@@ -5,35 +5,39 @@ import cn.elabosak.mailw.sql.PlayerEmail;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  * @author ElaBosak
  */
 public class SetEmailAccount {
-    public boolean set(UUID uuid, String email) {
+    public static boolean set(String playerName, String uuid, String email) {
         try {
-            PlayerEmail sqlite = new PlayerEmail();
             Connection con = MailWApi.getConnection();
             boolean b = false;
-            if (sqlite.select(con, uuid.toString()) != null) {
-                b = sqlite.update(con, uuid, email);
+            if (PlayerEmail.selectEmail(con, uuid) != null) {
+//                b = sqlite.updateEmail(con, uuid, email) && sqlite.updatePlayerName(con, uuid, playerName);
+                b = PlayerEmail.update(con, uuid, email, playerName);
+//                b = sqlite.delete(con,uuid) && sqlite.insert(con, playerName, uuid, email);
+                con.close();
             } else {
-                b = sqlite.insert(con, uuid, email);
+                b = PlayerEmail.insert(con, playerName, uuid, email);
+                con.close();
             }
-            con.close();
             return b;
         } catch (SQLException e) {
             return false;
         }
     }
-    public boolean remove(UUID uuid) {
+    public static boolean remove(String uuid) {
         try {
-            PlayerEmail sqlite = new PlayerEmail();
             Connection con = MailWApi.getConnection();
-            sqlite.delete(con, uuid);
-            con.close();
-            return true;
+            if (PlayerEmail.delete(con, uuid)) {
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
         } catch (SQLException e) {
             return false;
         }

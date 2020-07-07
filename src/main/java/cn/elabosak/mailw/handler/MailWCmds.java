@@ -37,7 +37,7 @@ public class MailWCmds implements TabExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.general")) {
                     if (args.length == 2) {
-                        if (new SetEmailAccount().set(p.getUniqueId(), args[1])){
+                        if (SetEmailAccount.set(p.getName(), p.getUniqueId().toString(), args[1])){
                             p.sendTitle(ChatColor.GREEN+"§lEmail Set Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
                             return true;
                         }else {
@@ -61,7 +61,7 @@ public class MailWCmds implements TabExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("MailW.general")) {
-                    if (new SetEmailAccount().remove(p.getUniqueId())){
+                    if (SetEmailAccount.remove(p.getUniqueId().toString())){
                         p.sendTitle(ChatColor.GOLD+"§lEmail Removed Successfully", ChatColor.BLUE+"§lPowered By = MailW =", 40,20, 20);
                         return true;
                     }else {

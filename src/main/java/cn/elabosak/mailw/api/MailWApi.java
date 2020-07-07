@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,18 +32,18 @@ public class MailWApi {
 
     /**
      * Send Email
+     * @param uuid Recipient's uuid
      * @param sender Sender name
      * @param subject Subject of email
      * @param content Content of email
-     * @param target Recipient's name
      * @return Whether sending mail is successful
      */
-    public static boolean sendEmail(Player target, String sender, String subject, String content) {
+    public static boolean sendEmail(String uuid, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
             PlayerEmail sqlite = new PlayerEmail();
             Connection con = MailWApi.getConnection();
-            receiveMailAccount = sqlite.select(con,target.getUniqueId().toString());
+            receiveMailAccount = sqlite.selectEmail(con, uuid);
             if (receiveMailAccount != null) {
                 con.close();
                 return SendEmail.send(receiveMailAccount,sender,subject,content);
@@ -85,7 +86,7 @@ public class MailWApi {
      * @param htmlString Output after converting html file to String
      * @return The title of the html obtained as the mail subject
      */
-    public static String getTitle(String htmlString) {
+    public static String htmlGetTitle(String htmlString) {
         String regex;
         StringBuilder title = new StringBuilder();
         final List<String> list = new ArrayList<>();
@@ -109,7 +110,7 @@ public class MailWApi {
      * @param htmlString Output after converting html file to String
      * @return The sender of the html obtained as the mail sender
      */
-    public static String getSender(String htmlString) {
+    public static String htmlGetSender(String htmlString) {
         String regex;
         StringBuilder sender = new StringBuilder();
         final List<String> list = new ArrayList<>();
@@ -131,25 +132,36 @@ public class MailWApi {
     /**
      * Get the content of html as a mail subject
      * @param htmlString Output after converting html file to String
+     * @param playerName Need to send to somebody
      * @return The content of the html obtained as the mail content
      */
-    public static String getContent(String htmlString, Player target) {
+    public static String htmlGetContent(String htmlString, String playerName) throws SQLException{
         String out = null;
-        out = htmlString.replace("{{player.name}}", target.getName());
-        out = out.replace("{{player.uuid}}", target.getUniqueId().toString());
+        out = htmlString.replace("{{player.name}}", playerName);
+        out = out.replace("{{player.uuid}}", PlayerEmail.selectUuid(getConnection(), playerName));
         return out;
     }
 
     /**
      * Get the email of the specified player
      * @param con Database connection data
-     * @param player The name of the player whose email needs to be found
+     * @param uuid The uuid of the player whose email needs to be found
      * @return The required player's email
      * @throws SQLException Database error
      */
-    public static String getPlayerEmail(Connection con, Player player) throws SQLException {
-        PlayerEmail sqlite = new PlayerEmail();
-        return sqlite.select(con, player.getUniqueId().toString());
+    public static String getPlayerEmail(Connection con, String uuid) throws SQLException {
+        return PlayerEmail.selectEmail(con, PlayerEmail.selectEmail(con, uuid));
+    }
+
+    /**
+     *
+     * @param con Database connection data
+     * @param uuid The uuid of the player whose email needs to be found
+     * @return The required player's name
+     * @throws SQLException Database error
+     */
+    public static String getPlayerName(Connection con, String uuid) throws SQLException {
+        return PlayerEmail.selectPlayerName(con, uuid);
     }
 
     /**

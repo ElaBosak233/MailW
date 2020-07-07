@@ -17,8 +17,8 @@ public class PlayerEmail {
      * @return Whether the table was successfully created
      * @throws SQLException Database error
      */
-    public boolean createTable(Connection con) throws SQLException {
-        String sql = "create TABLE IF NOT EXISTS EMAIL(uuid String, email String); ";
+    public static boolean createTable(Connection con) throws SQLException {
+        String sql = "create TABLE IF NOT EXISTS EMAIL(playerName String, uuid String, email String); ";
         Statement stat = null;
         stat = con.createStatement();
         try {
@@ -34,7 +34,7 @@ public class PlayerEmail {
      * @param con Database connection data
      * @throws SQLException Database error
      */
-    public void dropTable(Connection con) throws SQLException {
+    public static void dropTable(Connection con) throws SQLException {
         String sql = "drop table EMAIL ";
         Statement stat = null;
         stat = con.createStatement();
@@ -49,33 +49,28 @@ public class PlayerEmail {
      * @return Whether the operation was successful
      * @throws SQLException Database error
      */
-    public boolean insert(Connection con, UUID uuid, String email) throws SQLException {
-        String sql = "insert into EMAIL (uuid,email) values(?,?)";
+    public static boolean insert(Connection con, String playerName, String  uuid, String email) throws SQLException {
+        String sql = "insert into EMAIL (playerName, uuid, email) values(?,?,?)";
         try (PreparedStatement pstmt = con.prepareStatement(sql)) {
             int idx = 1 ;
-            pstmt.setString(idx++,uuid.toString());
+            pstmt.setString(idx++,playerName);
+            pstmt.setString(idx++,uuid);
             pstmt.setString(idx++,email);
             pstmt.executeUpdate();
+            con.close();
         }
         return true;
     }
 
-    /**
-     * Change the data in the database
-     * @param con Database connection data
-     * @param email The email address that needs to be set
-     * @param uuid The uuid of the email needs to be changed
-     * @return Whether the operation was successful
-     * @throws SQLException Database error
-     */
-    public boolean update(Connection con, UUID uuid, String email) throws SQLException {
-        String sql = "update EMAIL set email = ? where uuid = ?";
+    public static boolean update(Connection con, String uuid, String playerName, String email) throws SQLException {
+        String sql = "update EMAIL set playerName = ? , email = ? where uuid = ?";
         PreparedStatement pst = null;
         pst = con.prepareStatement(sql);
         int idx = 1 ;
         try {
+            pst.setString(idx++, playerName);
             pst.setString(idx++, email);
-            pst.setString(idx++, uuid.toString());
+            pst.setString(idx++, uuid);
             pst.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -83,39 +78,88 @@ public class PlayerEmail {
         }
     }
 
+//    /**
+//     * Change the data in the database
+//     * @param con Database connection data
+//     * @param email The email address that needs to be set
+//     * @param uuid The uuid of the email needs to be changed
+//     * @return Whether the operation was successful
+//     * @throws SQLException Database error
+//     */
+//    public boolean updateEmail(Connection con, String uuid, String email) throws SQLException {
+//        String sql = "update EMAIL set email = ? where uuid = ?";
+//        PreparedStatement pst = null;
+//        pst = con.prepareStatement(sql);
+//        int idx = 1 ;
+//        try {
+//            pst.setString(idx++, email);
+//            pst.setString(idx++, uuid);
+//            pst.executeUpdate();
+//            return true;
+//        } catch (SQLException e) {
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * Change the data in the database
+//     * @param con Database connection data
+//     * @param uuid The uuid of the email needs to be changed
+//     * @param playerName The current name of the person whose name needs to be updated
+//     * @return Whether the operation was successful
+//     * @throws SQLException Database error
+//     */
+//    public boolean updatePlayerName(Connection con, String uuid, String playerName) throws SQLException {
+//        String sql = "update EMAIL set playerName = ? where uuid = ?";
+//        PreparedStatement pst = null;
+//        pst = con.prepareStatement(sql);
+//        int idx = 1 ;
+//        try {
+//            pst.setString(idx++, playerName);
+//            pst.setString(idx++, uuid);
+//            pst.executeUpdate();
+//            return true;
+//        } catch (SQLException e) {
+//            return false;
+//        }
+//    }
+
     /**
      * Delete the data in the database
      * @param con Database connection data
      * @param uuid Uuid of data to be deleted
-     * @throws SQLException Database error
      */
-    public void delete(Connection con,UUID uuid) throws SQLException {
+    public static boolean delete(Connection con, String uuid) {
+        try {
         String sql = "delete from EMAIL where uuid = ?";
         PreparedStatement pst = null;
         pst = con.prepareStatement(sql);
         int idx = 1 ;
-        pst.setString(idx++, uuid.toString());
+        pst.setString(idx++, uuid);
         pst.executeUpdate();
-
-    }
-
-    public static void selectAll(Connection con) throws SQLException {
-        String sql = "select * from EMAIL";
-        Statement stat = null;
-        ResultSet rs = null;
-        stat = con.createStatement();
-        rs = stat.executeQuery(sql);
-        while(rs.next())
-        {
-            String uuid = rs.getString("uuid");
-            String email = rs.getString("email");
-            System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
+        return true;
+        } catch (SQLException e) {
+            return false;
         }
-
     }
 
-    public String select(Connection con, String uuid) throws SQLException {
-        String sql = "select * from EMAIL where uuid =?";
+//    public static void selectAll(Connection con) throws SQLException {
+//        String sql = "select * from EMAIL";
+//        Statement stat = null;
+//        ResultSet rs = null;
+//        stat = con.createStatement();
+//        rs = stat.executeQuery(sql);
+//        while(rs.next())
+//        {
+//            String uuid = rs.getString("uuid");
+//            String email = rs.getString("email");
+//            System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
+//        }
+//
+//    }
+
+    public static String selectEmail(Connection con, String uuid) throws SQLException {
+        String sql = "select email from EMAIL where uuid = ?";
         PreparedStatement pst = null;
         ResultSet rs = null;
         pst = con.prepareStatement(sql);
@@ -128,6 +172,38 @@ public class PlayerEmail {
             System.out.println(rs.getString("uuid")+"\t"+rs.getString("email"));
         }
         return email;
+    }
+
+    public static String selectPlayerName(Connection con, String uuid) throws SQLException {
+        String sql = "select playerName from EMAIL where uuid =?";
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        pst = con.prepareStatement(sql);
+        int idx = 1 ;
+        pst.setString(idx++, uuid);
+        rs = pst.executeQuery();
+        String playerName = null;
+        if (rs.next()) {
+            playerName = rs.getString("playerName");
+            System.out.println(rs.getString("uuid")+"\t"+rs.getString("playerName"));
+        }
+        return playerName;
+    }
+
+    public static String selectUuid(Connection con, String playerName) throws SQLException {
+        String sql = "select uuid from EMAIL where playerName =?";
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        pst = con.prepareStatement(sql);
+        int idx = 1 ;
+        pst.setString(idx++, playerName);
+        rs = pst.executeQuery();
+        String uuid = null;
+        if (rs.next()) {
+            uuid = rs.getString("uuid");
+            System.out.println(rs.getString("uuid")+"\t"+rs.getString("uuid"));
+        }
+        return uuid;
     }
 
 //    public static void main(String args[]) throws SQLException {

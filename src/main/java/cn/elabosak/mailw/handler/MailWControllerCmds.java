@@ -2,14 +2,13 @@ package cn.elabosak.mailw.handler;
 
 import cn.elabosak.mailw.api.MailWApi;
 import cn.elabosak.mailw.sql.MailWSettings;
-import cn.elabosak.mailw.utils.SetEmailAccount;
+import cn.elabosak.mailw.sql.PlayerEmail;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -139,17 +138,17 @@ public class MailWControllerCmds implements TabExecutor {
                         sender.sendMessage(ChatColor.RED+"§lPlease Type The Correct Targets To Continue "+ChatColor.GOLD+" /MailWController send <Player> <Template> ");
                         return true;
                     } else {
-                        Player target = Bukkit.getPlayer(args[1]);
                         File file = new File("plugins/MailW/template/"+args[2]+"/index.html");
                         if (file.exists()) {
                             try {
                                 String read = MailWApi.readHtml(file);
                                 if (!Objects.equals(read, "err")) {
-                                    String sd = MailWApi.getSender(read);
-                                    String tt = MailWApi.getTitle(read);
-                                    String content = MailWApi.getContent(read,target);
-//                                    Bukkit.getServer().getConsoleSender().sendMessage(sd+"\n"+tt+"\n"+content);
-                                    if (MailWApi.sendEmail(target, sd,tt,content)) {
+                                    String sd = MailWApi.htmlGetSender(read);
+                                    String tt = MailWApi.htmlGetTitle(read);
+                                    String content = MailWApi.htmlGetContent(read,args[1]);
+                                    PlayerEmail sqlite = new PlayerEmail();
+                                    String uuid = sqlite.selectUuid(con, args[1]);
+                                    if (MailWApi.sendEmail(uuid, sd,tt,content)) {
                                         sender.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
                                         return true;
                                     } else {

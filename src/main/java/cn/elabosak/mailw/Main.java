@@ -7,6 +7,10 @@ import cn.elabosak.mailw.sql.PlayerEmail;
 import cn.elabosak.mailw.sql.MailWSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,7 +21,7 @@ import java.sql.SQLException;
  * @author ElaBosak
  * @date 2020/7/1
  */
-public final class Main extends JavaPlugin {
+public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
@@ -36,7 +40,7 @@ public final class Main extends JavaPlugin {
         try {
             Connection con = MailWApi.getConnection();
             if (MailWSettings.initTable(con)) {
-                if (MailWSettings.selectEmail(con) == null || MailWSettings.selectSmtp(con) == null || MailWSettings.selectPort(con) == null || MailWSettings.selectPasswd(con) == null) {
+                if (!MailWApi.isMailWSet(con)) {
                     Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.BLUE+"= Please Init The MailW By Using /MailWController set <Email> <Smtp> <Port> <Passwd> =");
                 }
                 con.close();
@@ -49,9 +53,8 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
         try {
-            PlayerEmail sqlite = new PlayerEmail();
             Connection con = MailWApi.getConnection();
-            if(sqlite.createTable(con)) {
+            if(PlayerEmail.createTable(con)) {
                 con.close();
             } else {
                 con.close();
@@ -66,6 +69,18 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginCommand("MailW").setExecutor(new MailWCmds());
         Bukkit.getPluginCommand("MailWController").setExecutor(new MailWControllerCmds());
     }
+
+//    @EventHandler
+//    public void onPlayerJoin(PlayerJoinEvent event) throws SQLException {
+//        Connection con = MailWApi.getConnection();
+//        if (MailWApi.getPlayerName(con, event.getPlayer().getUniqueId().toString()) != event.getPlayer().getName()) {
+//            PlayerEmail sqlite = new PlayerEmail();
+//            sqlite.update(con, event.getPlayer().getName(), event.getPlayer().getUniqueId(), MailWApi.getPlayerEmail(con, event.getPlayer().getUniqueId().toString()));
+//            con.close();
+//        } else {
+//            con.close();
+//        }
+//    }
 
     @Override
     public void onDisable() {
