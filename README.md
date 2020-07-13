@@ -45,13 +45,14 @@ Have you ever imagined linking the whitelist and activation code? Have you ever 
 ## ⭐**DOWNLOAD**
 |**Version**|**Bukkit**|**Content**|**Date**|**Address**
 |:-:|:-:|:-:|:-:|:-:|
+|**1.3.0**|1.13+|1.13+ Supported|2020.7.13|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.3.0/MailW-1.3.0.jar)|
 |**1.2.0**|1.12.2|Bug fixes, support sending emails to offline players|2020.7.7|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.2.0/MailW-1.2.0.jar)|
 |**1.1.0**|1.12.2|Simplify plugin commands and update API|2020.7.7|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.1.0/MailW-1.1.0.jar)|
 |**1.0.0**|1.12.2|Init Project|2020.7.2|[**Download**](https://github.com/ElaBosak233/MailW/releases/download/1.0.0/MailW.jar)|
 
 ## ⭐**FAQ**
 - **Why** the **Chinese** email I send is garbled
-> That is because the **default** encoding follows the system encoding when using the **JVM**, please add `-Dfile.encoding=utf-8` after `java` in the **startup script**
+> That is because the **default** encoding follows the system encoding when using the **JVM**, please add `-Dfile.encoding=utf-8` after `java` in the **startup script**, but this will result in garbled characters on your server terminal, so I suggest to use the form of pictures instead of Chinese and full-width characters
 - **Why** did I enter the correct email password, but still can't send email?
 > Some mailboxes do not use passwords as SMTP sending passwords and require `authorization codes`
 - **Why** ordinary port 25 is not available in some mailboxes

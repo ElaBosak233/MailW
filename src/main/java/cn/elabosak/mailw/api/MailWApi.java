@@ -27,7 +27,7 @@ public class MailWApi {
      * Get The Version Of This Plugin
      */
     public static String getVersion() {
-        return "1.2.0";
+        return "1.3.0";
     }
 
     /**
