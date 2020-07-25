@@ -16,11 +16,17 @@ import java.util.List;
 import java.util.Objects;
 
 import cn.elabosak.mailw.utils.Base64Run;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author ElaBosak
  */
 public class MailWControllerCmds implements TabExecutor {
+
+    JavaPlugin plugin;
+    public MailWControllerCmds(JavaPlugin plugin){
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand (CommandSender sender, Command cmd, String lable, String[] args) {
@@ -58,6 +64,7 @@ public class MailWControllerCmds implements TabExecutor {
 //                return true;
 //            }
 //        }
+
         if (args[0].equalsIgnoreCase("set")) {
             if (sender instanceof ConsoleCommandSender) {
                 if (sender.hasPermission("MailW.admin")) {
@@ -145,7 +152,7 @@ public class MailWControllerCmds implements TabExecutor {
                                     String tt = MailWApi.htmlGetTitle(read);
                                     String content = MailWApi.htmlGetContent(read,args[1]);
                                     String uuid = PlayerEmail.selectUuid(con, args[1]);
-                                    if (MailWApi.sendEmail(uuid, sd,tt,content)) {
+                                    if (MailWApi.sendEmail(plugin, uuid, sd, tt, content)) {
                                         sender.sendMessage(ChatColor.GREEN+"§lMail Sent Successfully");
                                         return true;
                                     } else {

@@ -5,13 +5,16 @@ import cn.elabosak.mailw.handler.MailWCmds;
 import cn.elabosak.mailw.handler.MailWControllerCmds;
 import cn.elabosak.mailw.sql.PlayerEmail;
 import cn.elabosak.mailw.sql.MailWSettings;
+import cn.elabosak.mailw.utils.SendEmail;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.sql.Connection;
@@ -67,7 +70,7 @@ public final class Main extends JavaPlugin implements Listener {
 
         Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"= MailW Has Been Launched =");
         Bukkit.getPluginCommand("MailW").setExecutor(new MailWCmds());
-        Bukkit.getPluginCommand("MailWController").setExecutor(new MailWControllerCmds());
+        Bukkit.getPluginCommand("MailWController").setExecutor(new MailWControllerCmds(this));
     }
 
 //    @EventHandler

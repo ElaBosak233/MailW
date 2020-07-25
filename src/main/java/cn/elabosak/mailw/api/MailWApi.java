@@ -1,9 +1,13 @@
 package cn.elabosak.mailw.api;
 
+import cn.elabosak.mailw.Main;
 import cn.elabosak.mailw.sql.PlayerEmail;
 import cn.elabosak.mailw.sql.MailWSettings;
 import cn.elabosak.mailw.utils.SendEmail;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
@@ -27,7 +31,7 @@ public class MailWApi {
      * Get The Version Of This Plugin
      */
     public static String getVersion() {
-        return "1.3.0";
+        return "1.4.0";
     }
 
     /**
@@ -38,14 +42,26 @@ public class MailWApi {
      * @param content Content of email
      * @return Whether sending mail is successful
      */
-    public static boolean sendEmail(String uuid, String sender, String subject, String content) {
+    public static boolean sendEmail(JavaPlugin plugin, String uuid, String sender, String subject, String content) {
         String receiveMailAccount = null;
         try {
             Connection con = MailWApi.getConnection();
             receiveMailAccount = PlayerEmail.selectEmail(con, uuid);
             if (receiveMailAccount != null) {
                 con.close();
-                return SendEmail.send(receiveMailAccount,sender,subject,content);
+                String finalReceiveMailAccount = receiveMailAccount;
+                try {
+                    new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        SendEmail.send(finalReceiveMailAccount,sender,subject,content);
+                    }
+                    }.runTaskAsynchronously(plugin);
+                    return true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             } else {
                 con.close();
                 return false;

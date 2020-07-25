@@ -1,5 +1,5 @@
 # MailW
-[![AppVeyor](https://img.shields.io/appveyor/build/ElaBosak233/MailW?label=Appveyor%20Build&style=flat-square)](https://ci.appveyor.com/project/ElaBosak233/mailw) ![release](https://img.shields.io/github/v/release/ElaBosak233/MailW?style=flat-square) ![author](https://img.shields.io/badge/author-ElaBosak233-brightgreen?style=flat-square) ![Bukkit](https://img.shields.io/badge/Bukkit-1.12.2-blue?style=flat-square)
+[![AppVeyor](https://img.shields.io/appveyor/build/ElaBosak233/MailW?label=Appveyor%20Build&style=flat-square)](https://ci.appveyor.com/project/ElaBosak233/mailw) ![release](https://img.shields.io/github/v/release/ElaBosak233/MailW?style=flat-square) ![author](https://img.shields.io/badge/author-ElaBosak233-brightgreen?style=flat-square) ![Bukkit](https://img.shields.io/badge/Bukkit-1.12.2+-blue?style=flat-square)
 
 ## ⭐**WHAT CAN IT DO**
 
