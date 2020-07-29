@@ -18,18 +18,10 @@ import java.sql.SQLException;
  * @author ElaBosak
  * @date 2020/7/1
  */
-public final class Main extends JavaPlugin implements Listener {
+public final class MailW extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        File file = new File(getDataFolder(),"config.yml");
-        if(!getDataFolder().exists()){
-            getDataFolder().mkdirs();
-        }
-        if(!file.exists()){
-            this.saveDefaultConfig();
-        }
-        this.reloadConfig();
         File template = new File(getDataFolder()+"/template");
         if (!template.exists()) {
             template.mkdirs();
