@@ -1,5 +1,5 @@
 name: MailW
-version: 1.3.0
+version: 1.4.1
 main: cn.elabosak.mailw.Main
 api-version: 1.13
 authors: [ElaBosak233]

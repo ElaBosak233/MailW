@@ -1,20 +1,14 @@
 package cn.elabosak.mailw;
 
 import cn.elabosak.mailw.api.MailWApi;
-import cn.elabosak.mailw.handler.MailWCmds;
-import cn.elabosak.mailw.handler.MailWControllerCmds;
+import cn.elabosak.mailw.commands.MailWCmds;
+import cn.elabosak.mailw.commands.MailWControllerCmds;
 import cn.elabosak.mailw.sql.PlayerEmail;
 import cn.elabosak.mailw.sql.MailWSettings;
-import cn.elabosak.mailw.utils.SendEmail;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.sql.Connection;

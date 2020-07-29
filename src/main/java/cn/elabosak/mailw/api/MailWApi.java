@@ -31,7 +31,7 @@ public class MailWApi {
      * Get The Version Of This Plugin
      */
     public static String getVersion() {
-        return "1.4.0";
+        return "1.4.1";
     }
 
     /**
@@ -51,11 +51,12 @@ public class MailWApi {
                 con.close();
                 String finalReceiveMailAccount = receiveMailAccount;
                 try {
-                    new BukkitRunnable(){
-                    @Override
-                    public void run() {
-                        SendEmail.send(finalReceiveMailAccount,sender,subject,content);
-                    }
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            SendEmail.send(finalReceiveMailAccount,sender,subject,content);
+                            this.cancel();
+                        }
                     }.runTaskAsynchronously(plugin);
                     return true;
                 } catch (Exception e) {
