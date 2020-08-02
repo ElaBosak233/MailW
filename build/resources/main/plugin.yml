@@ -1,10 +1,10 @@
 name: MailW
 version: 1.4.1
-main: cn.elabosak.mailw.MailW
+main: cn.ac.ela.mailw.MailW
 api-version: 1.13
 authors: [ElaBosak233]
 description: A Smart E-mail Sending API For Bukkit / Spigot
-website: https://mailw.elabosak.cn
+website: https://ela.ac.cn
 
 commands:
   MailW:

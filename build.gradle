@@ -4,7 +4,7 @@ plugins {
 
 apply plugin: 'java'
 
-group 'cn.elabosak'
+group 'cn.ac.ela'
 version '1.4.1'
 
 tasks.withType(JavaCompile) {
@@ -25,7 +25,7 @@ jar {
     manifestContentCharset 'utf-8'
     metadataCharset 'utf-8'
     manifest {
-        attributes "Main-Class": "cn.elabosak.mailw.MailW"
+        attributes "Main-Class": "cn.ac.ela.mailw.MailW"
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
